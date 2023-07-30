@@ -1,0 +1,5 @@
+Feature,Gini,Shannon,Simpson,I.I.R.
+job,0.92,0.85,0.51,0.08
+education,0.92,0.86,0.63,0.0
+marital,0.81,0.82,0.59,0.19
+y,0.4,0.51,0.25,0.13

@@ -1,0 +1,6 @@
+Feature,Gini,Shannon,Simpson,I.I.R.
+gender,0.98,0.99,0.97,0.78
+race1,0.37,0.41,0.1,0.02
+lsat,0.96,0.72,0.18,0.0
+ugpa,0.97,0.86,0.55,0.0
+pass_bar,0.2,0.3,0.11,0.06

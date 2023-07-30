@@ -1,0 +1,6 @@
+Feature,Gini,Shannon,Simpson,I.I.R.
+Sex_Code_Text,0.68,0.76,0.52,0.28
+Ethnic_Code_Text,0.73,0.55,0.23,0.0
+Language,0.02,0.04,0.01,0.0
+MaritalStatus,0.5,0.46,0.12,0.0
+DecileScore,0.92,0.86,0.52,0.0
