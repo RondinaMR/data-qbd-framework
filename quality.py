@@ -473,11 +473,11 @@ class Quality:
 
         # with open(self._file_name) as f:
         #     if self._header == "y":
-        #         authority = f.readline() + ".csv"
+        #         output_filename = f.readline() + ".csv"
         #     else:
-        #         authority = input("Enter output name: ") + ".csv"
-        authority = output_path + dataset_name + ".csv"
-        textfile = open(authority, "w")
+        #         output_filename = input("Enter output name: ") + ".csv"
+        output_filename = output_path + dataset_name + ".csv"
+        textfile = open(output_filename, "w")
         # this write the columns name
         textfile.write("Dataset Name,Can Open,Com-I-1-DevA,Com-I-5,Acc-I-4,Con-I-3,Con-I-2-DevB,Con-I-4-DevC,Error\n")
 
