@@ -21,12 +21,12 @@ def open_file(a, isurl, symbol=None):
         print(f'symbol \'{symbol}\'')
         if correct_file:
             print("file is correct")
-            df = pd.read_csv(a, delimiter=symbol, skip_blank_lines=False, error_bad_lines=False, index_col=False)
+            df = pd.read_csv(a, delimiter=symbol, skip_blank_lines=False, on_bad_lines='warn', index_col=False)
         else:
             return False, symbol, "", symbol  # as shortcut: if the file is wrong, the second parameter "symbol" now corresponds to the error that was raised
     except UnicodeDecodeError as chracter_error:
         df = pd.read_csv(a, delimiter=symbol, skip_blank_lines=False, encoding='latin1',
-                         error_bad_lines=False)  # I change the encoding in case of UnicodeEncodeError
+                         on_bad_lines='warn')  # I change the encoding in case of UnicodeEncodeError
         print("Program wil MAY stop due to the error ",
               chracter_error)  # The program may stop anyway; it is rare but it can happen
     except HTTPError as net_error:
@@ -36,7 +36,7 @@ def open_file(a, isurl, symbol=None):
             req.add_header('User-Agent',
                            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36')
             content = urlopen(req)
-            df = pd.read_csv(content, delimiter=symbol, skip_blank_lines=False, error_bad_lines=False, index_col=False)
+            df = pd.read_csv(content, delimiter=symbol, skip_blank_lines=False, on_bad_lines='warn', index_col=False)
         except:
             print("Program wil stop due to the error ", net_error)
             return False, "Network error", "", net_error
