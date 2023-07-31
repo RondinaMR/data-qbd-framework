@@ -7,7 +7,7 @@ import urllib.request
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 import sys
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 n_of_decimal = 3
 
