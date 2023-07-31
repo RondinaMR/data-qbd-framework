@@ -6,14 +6,14 @@ import os
 
 
 class Imbalance:
-    def __init__(self, dataset_name, df, names, output_path=''):
+    def __init__(self, dataset_name, df, sensitive_features, output_path=''):
         self._df = df
-        self._names = names
+        self._sensitive_features = sensitive_features
         self._frequencies = {}
         self._results = {}
         self._dataset_name = dataset_name
         self._output_path = output_path
-        for feature_name in names:
+        for feature_name in sensitive_features:
             self._frequencies[feature_name] = self._df[feature_name].value_counts(normalize=True, dropna=True)
             self._results[feature_name] = self.calc_single_feature(feature_name)
         self.print()
@@ -74,7 +74,7 @@ class Imbalance:
 
     def frequencies(self, feature_name='all_features_printing'):
         if feature_name=='all_features_printing':
-            for name in self._names:
+            for name in self._sensitive_features:
                 print(self._frequencies[name])
         else:
             print(self._frequencies[feature_name])
@@ -83,7 +83,7 @@ class Imbalance:
         print("\n", f'*** {self._dataset_name} ***', "\n")
         my_table = PrettyTable()
         my_table.field_names = ["Feature", "Gini", "Shannon", "Simpson", "I.I.R."]
-        for feature_name in self._names:
+        for feature_name in self._sensitive_features:
             my_table.add_row([feature_name, f"{self._results[feature_name]['gini']:.2f}",
                               f"{self._results[feature_name]['shannon']:.2f}",
                               f"{self._results[feature_name]['simpson']:.2f}",
@@ -101,7 +101,7 @@ class Imbalance:
             if not os.path.exists(self._output_path):
                 os.makedirs(self._output_path)
         data = {'Feature': [], 'Gini': [], 'Shannon': [], 'Simpson': [], 'I.I.R.': []}
-        for feature_name in self._names:
+        for feature_name in self._sensitive_features:
             data['Feature'].append(feature_name)
             data['Gini'].append(round(self._results[feature_name]['gini'], 2))
             data['Shannon'].append(round(self._results[feature_name]['shannon'], 2))
