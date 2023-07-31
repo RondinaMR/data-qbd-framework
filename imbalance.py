@@ -6,15 +6,13 @@ import os
 
 
 class Imbalance:
-    def __init__(self, dataset_name, df, names, output_path='', output_name=None):
+    def __init__(self, dataset_name, df, names, output_path=''):
         self._df = df
         self._names = names
         self._frequencies = {}
         self._results = {}
         self._dataset_name = dataset_name
         self._output_path = output_path
-        if output_name is None:
-            self._output_name = f'{self._dataset_name}'
         for feature_name in names:
             self._frequencies[feature_name] = self._df[feature_name].value_counts(normalize=True, dropna=True)
             self._results[feature_name] = self.calc_single_feature(feature_name)
@@ -110,5 +108,5 @@ class Imbalance:
             data['Simpson'].append(round(self._results[feature_name]['simpson'], 2))
             data['I.I.R.'].append(round(self._results[feature_name]['imbalance_ratio'], 2))
         df = pd.DataFrame(data)
-        df.to_csv(f'{self._output_path}{self._output_name}.csv', index=False)
+        df.to_csv(f'{self._output_path}{self._dataset_name}.csv', index=False)
         return
