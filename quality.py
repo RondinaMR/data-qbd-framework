@@ -514,10 +514,9 @@ class Quality:
         else:
             print("Error --> ", dff)
             measures = [0, np.NaN, np.NaN, np.NaN, np.NaN, np.NaN, np.NaN, err]
-
-        textfile.write(dataset_name + ",")  # the [0;-1] is to get rid of the \n character
+        textfile.write(dataset_name)  # the [0;-1] is to get rid of the \n character
         for element in measures:
-            textfile.write(str(element) + ",")
+            textfile.write("," + str(element))
         textfile.write("\n")
         print("\n")
         textfile.close()
