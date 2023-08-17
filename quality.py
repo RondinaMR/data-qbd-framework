@@ -265,7 +265,7 @@ def return_n_duplicates(a):
     a_set = set(a)
     contains_duplicates = [a.count(element) for element in
                            tqdm(a_set,
-                                desc=f'Counting duplicates')]  # --> how many times each single value is present in the list a --> example: [1,3,2,1,4,1,2]
+                                desc=f'Counting duplicates',delay=3)]  # --> how many times each single value is present in the list a --> example: [1,3,2,1,4,1,2]
     duplicates = [x for x in contains_duplicates if
                   x > 1]  # example: [3,2,4,1] so we don't consider the value that occurs only 1
     return duplicates
