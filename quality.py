@@ -493,21 +493,21 @@ class Quality:
             columns_type, n_non_null_values = extract_metadata(dff)
             print("\n---COMPLETENESS---\n")
             # Completeness measures
-            ratio_empty_cells = empty_cells(dff, n_rows, n_columns)
-            ratio_empty_records = empy_records(dff, n_rows)
+            ratio_empty_cells = empty_cells(dff, n_rows, n_columns) #Com-I-1-DevA
+            ratio_empty_records = empy_records(dff, n_rows) #Com-I-5
             print("\n---ACCURACY---\n")
             # Accuracy measures
-            ratio_risk_of_dataset_inaccuracy = risk_of_dataset_inaccuracy(dff, n_columns, n_rows)
+            ratio_risk_of_dataset_inaccuracy = risk_of_dataset_inaccuracy(dff, n_columns, n_rows) #Acc-I-4
             print("\n---CONSISTENCY---\n")
             # Connsistency measures
             print("Consistency measures: Risk of data inconsistency")
-            ratio_data_inconsistency = risk_of_data_inconsistency(dff, n_columns)
+            ratio_data_inconsistency = risk_of_data_inconsistency(dff, n_columns) #Con-I-3
             # Iso-derivated measures
             print("Iso-derivated measures")
             print("Risk of type inconsistency")
-            risk_type_insistency = risk_type_inconsistency(dff, n_columns)
+            risk_type_insistency = risk_type_inconsistency(dff, n_columns) #Con-I-2-DevB
             print("Architecture consistency")
-            architecture_consistency = compute_arch_cons(self._file_name, symbol, isurl)
+            architecture_consistency = compute_arch_cons(self._file_name, symbol, isurl) #Con-I-4-DevC
             # all measures
             measures = [1, ratio_empty_cells, ratio_empty_records, ratio_risk_of_dataset_inaccuracy,
                         ratio_data_inconsistency, risk_type_insistency, architecture_consistency, err]
