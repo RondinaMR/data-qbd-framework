@@ -465,9 +465,9 @@ def detect_encoding(fileobj):
 
 
 class Quality:
-    def __init__(self, dataset_name, pretty_name=None, source_file_name, output_path, isurl, symbol=None):
+    def __init__(self, dataset_name, source_file_name, output_path, isurl, symbol=None, pretty_name=None):
         self._dataset_name = dataset_name
-        if pretty_name = None:
+        if pretty_name == None:
             self._pretty_name = dataset_name
         else:
             self._pretty_name = pretty_name
