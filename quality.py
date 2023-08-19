@@ -465,8 +465,12 @@ def detect_encoding(fileobj):
 
 
 class Quality:
-    def __init__(self, dataset_name, source_file_name, output_path, isurl, symbol=None):
+    def __init__(self, dataset_name, pretty_name=None, source_file_name, output_path, isurl, symbol=None):
         self._dataset_name = dataset_name
+        if pretty_name = None:
+            self._pretty_name = dataset_name
+        else:
+            self._pretty_name = pretty_name
         self._file_name = source_file_name  # file path
         self._symbol = symbol
         # file_name = input("Enter data file name: ")
@@ -515,7 +519,7 @@ class Quality:
         else:
             print("Error --> ", dff)
             measures = [0, np.NaN, np.NaN, np.NaN, np.NaN, np.NaN, np.NaN, err]
-        textfile.write(dataset_name)  # the [0;-1] is to get rid of the \n character
+        textfile.write(pretty_name)  # the [0;-1] is to get rid of the \n character
         for element in measures:
             textfile.write("," + str(element))
         textfile.write("\n")
