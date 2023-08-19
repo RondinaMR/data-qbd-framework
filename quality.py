@@ -244,14 +244,14 @@ def risk_of_data_inconsistency(df, n_columns):
     field_array = []
     single_duplication = []
     for i in range(0, n_columns):
-        print("column: ", i, end=';')
+        print("column: ", i, end='; ')
         value_list = df.iloc[:, i].tolist()  # [a,b,c]
         total_elements += len(value_list)
         field_array.append(value_list)  # I need this for the second computation --> [[value_list1],[value_list2],..]
         duplication_sum = sum(return_n_duplicates(value_list))
         single_duplication.append(duplication_sum)
-    print("\ntotal elements: ",total_elements)
-    print("single duplication: ",single_duplication)
+    print("\ntotal elements: ", total_elements)
+    print("single duplication: ", single_duplication)
     total_single_duplication = sum(single_duplication)
     print("total_single_duplication: ", total_single_duplication)
     total_multiple_duplication = compute_duplication_multiple_columns(field_array)
