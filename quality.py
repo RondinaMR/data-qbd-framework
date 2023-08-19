@@ -273,7 +273,7 @@ def return_n_duplicates(a):
 
 
 def compute_duplication_multiple_columns(big_array):
-    total_multiple_duplication = 0;
+    total_multiple_duplication = 0
     for i in range(0, len(big_array) - 1):
         for j in range(i + 1, len(big_array)):
             first_array = big_array[i]
