@@ -319,7 +319,7 @@ def risk_type_inconsistency(df, n_col):
             print(type_counter)
             min_element = min(type_counter)
             n_no_consistency += min_element  # the type that repreents the minority of the elements is the error
-    ratio = round(n_no_consistency / n_data_evaluated, n_of_decimal)
+    ratio = 1-round(n_no_consistency / n_data_evaluated, n_of_decimal)
     print("\nISO Related: Risk of type inconsistency", ratio)
     return ratio
 
