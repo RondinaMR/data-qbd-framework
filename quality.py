@@ -451,6 +451,7 @@ def detect_encoding(fileobj):
     # Read the first three bytes from the file
     fileobj.seek(0)
     byte_str = fileobj.read(3)
+    fileobj.seek(0) #reset the read position
 
     # Check if the first two bytes match the expected encoding
     if len(byte_str) == 3:
