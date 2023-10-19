@@ -293,8 +293,8 @@ def compute_duplication_multiple_columns(big_array):
 ## Not ISO
 
 def empty_cells(df, n_rows, n_col):
-    n_nan = df.isna().sum().sum()
-    ratio = round(n_nan / (n_rows * n_col), n_of_decimal)
+    n_notnan = df.notna().sum().sum()
+    ratio = round(n_notnan / (n_rows * n_col), n_of_decimal)
     print("\nISO Related: ratio of empty cells: ", ratio)
     print()
     return ratio
