@@ -4,9 +4,72 @@ import pandas as pd
 import numpy as np
 import os
 import matplotlib.pyplot as plt
+
 # Set the maximum number of rows and columns to display
 pd.set_option('display.max_rows', None)  # Display all rows
 pd.set_option('display.max_columns', None)  # Display all columns
+
+
+# Functions
+def hex_to_rgb(hex_color):
+    # Remove the '#' character if it's present
+    hex_color = hex_color.lstrip('#')
+    # Convert the hex color to RGB
+    r = int(hex_color[0:2], 16)
+    g = int(hex_color[2:4], 16)
+    b = int(hex_color[4:6], 16)
+    return r, g, b
+
+
+def rgb_to_hex(rgb):
+    # Convert RGB values to a hex color
+    r, g, b = rgb
+    return f"{r:02X}{g:02X}{b:02X}"
+
+
+def interpolate_color(min_color, max_color, value):
+    # Convert hex colors to RGB
+    min_rgb = hex_to_rgb(min_color)
+    max_rgb = hex_to_rgb(max_color)
+
+    # Interpolate the RGB values
+    interpolated_rgb = tuple(
+        int(min_rgb[i] + (max_rgb[i] - min_rgb[i]) * value) for i in range(3)
+    )
+
+    # Convert the interpolated RGB values back to hex
+    interpolated_color = rgb_to_hex(interpolated_rgb)
+    return interpolated_color
+
+
+import re
+
+
+def modify_latex_table(input_tex_file, min_color, max_color,dataquality_rule=False):
+    # Read the LaTeX file
+    with open(input_tex_file, 'r') as f:
+        tex_content = f.read()
+    position = 0
+    # Define a regular expression pattern to match table cells
+    cell_pattern = r'\d,\d{3}\s'
+    # Find all matches of the pattern
+    matches = re.findall(cell_pattern, tex_content)
+    # Loop through the matches and update the table cells
+    # Dataset-Name & Com-I-1-DevA & Com-I-5 & Acc-I-4 & Con-I-3 & Con-I-2-DevB & Con-I-4-DevC
+    for match in matches:
+        value = float(match.replace(',', '.'))
+        if value > 1.0:
+            value = 1.0
+        if dataquality_rule and (((position % 6) == 0) or ((position % 6) == 4)):  # Acc-I-4 & Con-I-3
+            value = 1 - value
+        color = interpolate_color(min_color, max_color, value)
+        replacement = f'{match.strip()}\cellcolor[HTML]{{{color}}}'
+        tex_content = tex_content.replace(match, replacement, 1)
+        position += 1
+    # Write the modified content back to the file
+    with open(input_tex_file, 'w') as f:
+        f.write(tex_content)
+
 
 # data_source = 'data/1_adult.data'
 # output_name = '1_Adult'
@@ -60,7 +123,7 @@ pd.set_option('display.max_columns', None)  # Display all columns
 # dataset = pd.read_csv(data_source, header=0)
 # Imbalance(f'{output_name}_DB', dataset, sensitive_features, output_path="analysis/")
 # Quality(f'{output_name}_DQ', data_source, "analysis/", isurl=False, pretty_name=pretty_name)
-#
+
 # output_name = '8_MovieLens'
 # pretty_name = 'MovieLens'
 # sensitive_features = ['Gender', 'Occupation', 'Zip-code']
@@ -101,7 +164,8 @@ for i, filename in enumerate(sorted(filenames_DQ)):
                                 "Con-I-2-DevB", "Con-I-4-DevC", "Error"])
 # Concatenate all the DataFrames into a single DataFrame
 all_df = pd.concat(dfs.values(), axis=0)
-df = all_df[["Dataset-Name", "Com-I-1-DevA", "Com-I-5", "Acc-I-4", "Con-I-3", "Con-I-2-DevB", "Con-I-4-DevC"]]
+df = all_df[["Dataset-Name", "Acc-I-4", "Com-I-1-DevA", "Com-I-5", "Con-I-2-DevB", "Con-I-3", "Con-I-4-DevC"]]
+# "Dataset-Name", "Com-I-1-DevA(↑)", "Com-I-5(↑)", "Acc-I-4(↓)", "Con-I-3(↑)", "Con-I-2-DevB(↑)", "Con-I-4-DevC(↑)"
 print(df)
 s = df.style.format(precision=3, decimal=',').hide(level=0, axis=0)
 s.set_table_styles([
@@ -109,10 +173,22 @@ s.set_table_styles([
     {'selector': 'bottomrule', 'props': ':hline;'},
     {'selector': 'midrule', 'props': ':hline;'},
 ], overwrite=True)
+# s.background_gradient(axis=0)
 f = open("tab_dataquality.tex", "w")
 f.write(s.to_latex(column_format="|p{2cm}|r|r|r|r|r|r|", position="t", label="tab:dataquality",
                    caption="Data quality measurements"))
 f.close()
+
+# Add colors to the latex table
+# # blue
+# min_color = "#deebf7"
+# max_color = "#3182bd"
+# reds
+min_color = "#fc9272" #dark red 50% / dark red : "#de2d26"
+max_color = "#fee0d2" #light red
+input_tex_file = 'tab_dataquality.tex'
+modify_latex_table(input_tex_file, min_color, max_color, dataquality_rule=True)
+print("Colors successfully added to the latex table!")
 
 # Calculate the average for each column (excluding 'Dataset-Name')
 average_values = df.iloc[:, 1:].mean()
@@ -133,6 +209,8 @@ dqsummary_df.reset_index(inplace=True)
 dqsummary_df.rename(columns={'index': 'Metric'}, inplace=True)
 # Sort the DataFrame by the "Metric" column in alphabetical order
 dqsummary_df = dqsummary_df.sort_values(by='Metric', ascending=True)
+dqsummary_df['Metric'] = dqsummary_df['Metric'].apply(
+    lambda x: f"{x}(↓)" if x == "Acc-I-4" else f"{x}#(↓)" if x == "Con-I-3" else f"{x}(↑)")
 # Print the resulting DataFrame
 print(dqsummary_df)
 # Select only the "Metric" and "Average" columns
@@ -155,7 +233,7 @@ plt.yticks(fontsize=22)
 plt.grid(axis='x', linestyle='--', alpha=0.6)  # Add grid lines for reference
 plt.tight_layout()
 plt.gca().invert_yaxis()  # Invert the y-axis to display from top to bottom
-plt.savefig('analysis/images/quality_measures_plot.svg', format="svg")
+# plt.savefig('analysis/images/quality_measures_plot.svg', format="svg")
 plt.savefig('analysis/images/quality_measures_plot.pdf', format="pdf")
 plt.show()
 
@@ -170,16 +248,34 @@ for i, filename in enumerate(sorted(filenames_DTS)):
     dfs.append(df)
 # Concatenate all the DataFrames into a single DataFrame
 all_df = pd.concat(dfs, axis=0, ignore_index=True)
+all_df = all_df[["Dataset", "Metric", "Value"]]
 print(all_df)
+s = all_df.style.format(precision=3, decimal=',').hide(level=0, axis=0)
+s.set_table_styles([
+    {'selector': 'toprule', 'props': ':hline;'},
+    {'selector': 'bottomrule', 'props': ':hline;'},
+    {'selector': 'midrule', 'props': ':hline;'},
+], overwrite=True)
+f = open("tab_dts.tex", "w")
+f.write(s.to_latex(column_format="|p{2cm}|r|r|r|r|r|r|", position="t", label="tab:dts_all",
+                   caption="Documentation measurements"))
+f.close()
+input_tex_file = 'tab_dts.tex'
+modify_latex_table(input_tex_file, min_color, max_color)
+print("Colors successfully added to the latex table!")
 # Group by 'Metric' and calculate the average, median, 1st quartile, and 3rd quartile of 'Value'
-dd_result_df = all_df.groupby('Metric')['Value'].agg(['mean', 'median', lambda x: x.quantile(0.25), lambda x: x.quantile(0.75)]).reset_index()
+dd_result_df = all_df.groupby('Metric')['Value'].agg(
+    ['mean', 'median', lambda x: x.quantile(0.25), lambda x: x.quantile(0.75)]).reset_index()
 # Rename the columns
-dd_result_df = dd_result_df.rename(columns={'mean': 'Presence Average', 'median': 'Median', '<lambda_0>': '1st Quartile (Q1)', '<lambda_1>': '3rd Quartile (Q3)'})
+dd_result_df = dd_result_df.rename(
+    columns={'mean': 'Presence Average', 'median': 'Median', '<lambda_0>': '1st Quartile (Q1)',
+             '<lambda_1>': '3rd Quartile (Q3)'})
 dd_result_df['Metric'] = dd_result_df['Metric'].str.replace(' Presence Average', '')
 print(dd_result_df)
 dd_tocsv_df = dd_result_df[['Metric', 'Presence Average']]
 # Save the DataFrame to a CSV file
-dd_tocsv_df.to_csv("analysis/dts_average.csv", index=False)  # Use index=False to exclude the index column in the CSV file
+dd_tocsv_df.to_csv("analysis/dts_average.csv",
+                   index=False)  # Use index=False to exclude the index column in the CSV file
 s = dd_tocsv_df.style.format(precision=2, decimal=',').hide(level=0, axis=0)
 s.set_table_styles([
     {'selector': 'toprule', 'props': ':hline;'},
@@ -192,6 +288,7 @@ f.write(s.to_latex(column_format="|l|r|", position="t", label="tab:dts-average",
 f.close()
 # Sort the DataFrame by the "Metric" column in alphabetical order
 dd_result_df = dd_result_df.sort_values(by='Metric', ascending=True)
+dd_result_df['Metric'] = dd_result_df['Metric'].apply(lambda x: f"{x}(↑)")
 # Calculate positive error values
 lower_error = abs(dd_result_df['Presence Average'] - dd_result_df['1st Quartile (Q1)'])
 upper_error = abs(dd_result_df['3rd Quartile (Q3)'] - dd_result_df['Presence Average'])
@@ -211,8 +308,7 @@ plt.yticks(fontsize=22)
 # Display the plot
 plt.tight_layout()
 plt.gca().invert_yaxis()  # Invert the y-axis to display from top to bottom
-plt.savefig('analysis/images/presence_average_plot.svg', format="svg")
+# plt.savefig('analysis/images/presence_average_plot.svg', format="svg")
 plt.savefig('analysis/images/presence_average_plot.pdf', format="pdf")
 plt.show()
 plt.show()
-
