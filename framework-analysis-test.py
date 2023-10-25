@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import os
 import matplotlib.pyplot as plt
+import re
 
 # Set the maximum number of rows and columns to display
 pd.set_option('display.max_rows', None)  # Display all rows
@@ -40,9 +41,6 @@ def interpolate_color(min_color, max_color, value):
     # Convert the interpolated RGB values back to hex
     interpolated_color = rgb_to_hex(interpolated_rgb)
     return interpolated_color
-
-
-import re
 
 
 def modify_latex_table(input_tex_file, min_color, max_color,dataquality_rule=False):
@@ -82,7 +80,7 @@ def modify_latex_table(input_tex_file, min_color, max_color,dataquality_rule=Fal
 #                              'education-num': np.int64, 'marital-status': str, 'occupation': str,
 #                              'relationship': str, 'race': str, 'sex': str, 'capital-gain': np.int64,
 #                              'capital-loss': np.int64, 'hours-per-week': np.int64, 'native-country': str,
-#                              'income': str}, na_values='?', encoding='utf-8')  #
+#                              'income': str}, na_values='?', encoding='utf-8')
 # sensitive_features = ['sex', 'race', 'education', 'marital-status', 'native-country', 'income']
 # Imbalance(f'{output_name}_DB', dataset, sensitive_features, output_path="analysis/")
 # Quality(f'{output_name}_DQ', data_source, "analysis/", isurl=False, pretty_name=pretty_name)
@@ -123,7 +121,7 @@ def modify_latex_table(input_tex_file, min_color, max_color,dataquality_rule=Fal
 # dataset = pd.read_csv(data_source, header=0)
 # Imbalance(f'{output_name}_DB', dataset, sensitive_features, output_path="analysis/")
 # Quality(f'{output_name}_DQ', data_source, "analysis/", isurl=False, pretty_name=pretty_name)
-
+#
 # output_name = '8_MovieLens'
 # pretty_name = 'MovieLens'
 # sensitive_features = ['Gender', 'Occupation', 'Zip-code']
@@ -160,11 +158,11 @@ filenames_DQ = [f for f in os.listdir("analysis/") if f.endswith("_DQ.csv")]
 dfs = {}
 for i, filename in enumerate(sorted(filenames_DQ)):
     dfs[i] = pd.read_csv(os.path.join("analysis", filename), header=0, sep=",",
-                         names=["Dataset-Name", "Can-Open", "Com-I-1-DevA", "Com-I-5", "Acc-I-4", "Con-I-3",
-                                "Con-I-2-DevB", "Con-I-4-DevC", "Error"])
+                         names=["Dataset-Name", "Can-Open", "Com-I-1-DevA", "Com-I-5", "Acc-I-4", "Con-I-3-DevC",
+                                "Con-I-2-DevB", "Con-I-4-DevD", "Error"])
 # Concatenate all the DataFrames into a single DataFrame
 all_df = pd.concat(dfs.values(), axis=0)
-df = all_df[["Dataset-Name", "Acc-I-4", "Com-I-1-DevA", "Com-I-5", "Con-I-2-DevB", "Con-I-3", "Con-I-4-DevC"]]
+df = all_df[["Dataset-Name", "Acc-I-4", "Com-I-1-DevA", "Com-I-5", "Con-I-2-DevB", "Con-I-3-DevC", "Con-I-4-DevD"]]
 # "Dataset-Name", "Com-I-1-DevA(↑)", "Com-I-5(↑)", "Acc-I-4(↓)", "Con-I-3(↑)", "Con-I-2-DevB(↑)", "Con-I-4-DevC(↑)"
 print(df)
 s = df.style.format(precision=3, decimal=',').hide(level=0, axis=0)
@@ -210,7 +208,7 @@ dqsummary_df.rename(columns={'index': 'Metric'}, inplace=True)
 # Sort the DataFrame by the "Metric" column in alphabetical order
 dqsummary_df = dqsummary_df.sort_values(by='Metric', ascending=True)
 dqsummary_df['Metric'] = dqsummary_df['Metric'].apply(
-    lambda x: f"{x}(↓)" if x == "Acc-I-4" else f"{x}#(↓)" if x == "Con-I-3" else f"{x}(↑)")
+    lambda x: f"{x}(↓)" if (x == "Acc-I-4" or x == "Con-I-3-DevC") else f"{x}(↑)")
 # Print the resulting DataFrame
 print(dqsummary_df)
 # Select only the "Metric" and "Average" columns
