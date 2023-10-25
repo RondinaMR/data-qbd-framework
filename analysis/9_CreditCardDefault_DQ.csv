@@ -1,2 +1,2 @@
 Dataset-Name,Can-Open,Com-I-1-DevA,Com-I-5,Acc-I-4,Con-I-3,Con-I-2-DevB,Con-I-4-DevC,Error
-Credit Card Default,1,1.0,1.0,0.081,0.778,0.916,1.0,No error
+Credit Card Default,1,1.0,1.0,0.081,0.06,0.916,1.0,No error
