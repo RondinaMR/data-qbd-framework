@@ -238,11 +238,12 @@ def risk_of_dataset_inaccuracy(df, n_columns, n_rows):
 
 # Consistency measures------------------------------------------------------------------>
 
+# Con-I-3
 def risk_of_data_inconsistency(df, n_columns):
-    # Con-I-3
     total_elements = 0
     field_array = []
     single_duplication = []
+    n_rows = len(df)
     for i in range(0, n_columns):
         print("column: ", i, end='; ')
         value_list = df.iloc[:, i].tolist()  # [a,b,c]
@@ -250,14 +251,16 @@ def risk_of_data_inconsistency(df, n_columns):
         field_array.append(value_list)  # I need this for the second computation --> [[value_list1],[value_list2],..]
         duplication_sum = sum(return_n_duplicates(value_list))
         single_duplication.append(duplication_sum)
+    total_possible_duplications = n_rows * (n_columns + (n_columns * (n_columns - 1) / 2)) if n_columns > 1 else n_rows * n_columns
     print("\ntotal elements: ", total_elements)
+    print(f"\ntotal possible duplications {total_possible_duplications} ({n_rows} rows, {n_columns} columns)")
     print("single duplication: ", single_duplication)
     total_single_duplication = sum(single_duplication)
     print("total_single_duplication: ", total_single_duplication)
     total_multiple_duplication = compute_duplication_multiple_columns(field_array)
     print("total_multiple_duplication: ", total_multiple_duplication)
     final_total = total_multiple_duplication + total_single_duplication
-    ratio = round(final_total / total_elements, n_of_decimal)
+    ratio = round(final_total / total_possible_duplications, n_of_decimal)
     print("ISO CON-I-3: risk_of_data_inconsistency:", ratio)
     return ratio
 
