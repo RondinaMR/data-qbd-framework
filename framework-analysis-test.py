@@ -226,6 +226,7 @@ plt.xlabel('Average', fontsize=22)
 plt.ylabel('Quality Measure', fontsize=22)
 plt.xticks(fontsize=22)
 plt.yticks(fontsize=22)
+plt.xlim(0, 1)  # Set the x-axis limits from 0 to 1
 # plt.title('Quality Measures Average and Error')
 # Show the plot
 plt.grid(axis='x', linestyle='--', alpha=0.6)  # Add grid lines for reference
