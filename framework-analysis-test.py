@@ -162,10 +162,10 @@ for i, filename in enumerate(sorted(filenames_DQ)):
                                 "Con-I-2-DevB", "Con-I-4-DevD", "Error"])
 # Concatenate all the DataFrames into a single DataFrame
 all_df = pd.concat(dfs.values(), axis=0)
-df = all_df[["Dataset-Name", "Acc-I-4", "Com-I-1-DevA", "Com-I-5", "Con-I-2-DevB", "Con-I-3-DevC", "Con-I-4-DevD"]]
+dq_df = all_df[["Dataset-Name", "Acc-I-4", "Com-I-1-DevA", "Com-I-5", "Con-I-2-DevB", "Con-I-3-DevC", "Con-I-4-DevD"]]
 # "Dataset-Name", "Com-I-1-DevA(↑)", "Com-I-5(↑)", "Acc-I-4(↓)", "Con-I-3(↑)", "Con-I-2-DevB(↑)", "Con-I-4-DevC(↑)"
-print(df)
-s = df.style.format(precision=3, decimal=',').hide(level=0, axis=0)
+print(dq_df)
+s = dq_df.style.format(precision=3, decimal=',').hide(level=0, axis=0)
 s.set_table_styles([
     {'selector': 'toprule', 'props': ':hline;'},
     {'selector': 'bottomrule', 'props': ':hline;'},
@@ -189,10 +189,10 @@ modify_latex_table(input_tex_file, min_color, max_color, dataquality_rule=True)
 print("Colors successfully added to the latex table!")
 
 # Calculate the average for each column (excluding 'Dataset-Name')
-average_values = df.iloc[:, 1:].mean()
-medians = df.iloc[:, 1:].median()
-q1_values = df.iloc[:, 1:].quantile(0.25)
-q3_values = df.iloc[:, 1:].quantile(0.75)
+average_values = dq_df.iloc[:, 1:].mean()
+medians = dq_df.iloc[:, 1:].median()
+q1_values = dq_df.iloc[:, 1:].quantile(0.25)
+q3_values = dq_df.iloc[:, 1:].quantile(0.75)
 # Create a new DataFrame with the averages
 dqsummary_df = pd.DataFrame({
     # 'Metric': metrics,
@@ -247,9 +247,9 @@ for i, filename in enumerate(sorted(filenames_DTS)):
     dfs.append(df)
 # Concatenate all the DataFrames into a single DataFrame
 all_df = pd.concat(dfs, axis=0, ignore_index=True)
-all_df = all_df[["Dataset", "Metric", "Value"]]
-print(all_df)
-s = all_df.style.format(precision=3, decimal=',').hide(level=0, axis=0)
+dd_df = all_df[["Dataset", "Metric", "Value"]]
+print(dd_df)
+s = dd_df.style.format(precision=3, decimal=',').hide(level=0, axis=0)
 s.set_table_styles([
     {'selector': 'toprule', 'props': ':hline;'},
     {'selector': 'bottomrule', 'props': ':hline;'},
@@ -311,3 +311,49 @@ plt.gca().invert_yaxis()  # Invert the y-axis to display from top to bottom
 plt.savefig('analysis/images/presence_average_plot.pdf', format="pdf")
 plt.show()
 plt.show()
+# ********** Data balance (DB)*************
+# Find all _DQ.csv files in the analysis directory
+filenames_DTS = [f for f in os.listdir("analysis/") if f.endswith("_DB.csv")]
+# Read each file into a separate DataFrame
+dfs = []
+for i, filename in enumerate(sorted(filenames_DTS)):
+    df = pd.read_csv(os.path.join("analysis", filename), header=0)
+    df['Dataset'] = filename.split("_")[1]
+    dfs.append(df)
+# Concatenate all the DataFrames into a single DataFrame
+all_df = pd.concat(dfs, axis=0, ignore_index=True)
+db_df = all_df[["Dataset", "Feature", "Gini", "Shannon", "Simpson", "I.I.R."]]
+print(db_df)
+# ********** Sankey flow plot*************
+
+for index, row in dq_df.iterrows():
+    # Extract dataset name and relevant columns for dq_sum
+    dataset_name = row["Dataset-Name"]
+    dq_cols = ["Acc-I-4", "Com-I-1-DevA", "Com-I-5", "Con-I-2-DevB", "Con-I-3-DevC", "Con-I-4-DevD"]
+
+    # Calculate dq_sum for the current dataset
+    dq_sum = row[dq_cols].sum()
+    # Extract db_sum from db_df
+    db_sum = db_df.loc[db_df['Dataset'] == dataset_name, 'Simpson'].sum()
+    # Extract dd_sum from dd_df
+    dd_sum = dd_df.loc[dd_df['Dataset'] == dataset_name, 'Value'].sum()
+
+    # Create the text for the Sankey diagram
+    text = f"{dataset_name} [{dq_sum:.3f}] Data Quality ISO\n"
+    text += f"{dataset_name} [{db_sum:.3f}] Data Balance\n"
+    text += f"{dataset_name} [{dd_sum:.3f}] Data Documentation\n"
+    text += f"Data Quality ISO [{dq_sum / 4:.3f}] Inconclusive Evidence\n"
+    text += f"Data Documentation [{dd_sum / 3:.3f}] Inscrutable Evidence\n"
+    text += f"Data Quality ISO [{dq_sum / 4:.3f}] Misguided Evidence\n"
+    text += f"Data Documentation [{dd_sum / 3:.3f}] Misguided Evidence\n"
+    text += f"Data Quality ISO [{dq_sum / 4:.3f}] Unfair Outcomes\n"
+    text += f"Data Balance [{db_sum / 3:.3f}] Unfair Outcomes\n"
+    text += f"Data Balance [{db_sum / 3:.3f}] Transformative Effects\n"
+    text += f"Data Quality ISO [{dq_sum / 4:.3f}] Traceability\n"
+    text += f"Data Balance [{db_sum / 3:.3f}] Traceability\n"
+    text += f"Data Documentation [{dd_sum / 3:.3f}] Traceability\n"
+
+    # Save the text to a file
+    with open(f"analysis/sankey/{dataset_name}_sankey.txt", "w") as file:
+        file.write(text)
+print("Sankey text files generated.")
