@@ -1,0 +1,13 @@
+MovieLens Movies [4.161] Data Quality ISO
+MovieLens Movies [0.000] Data Balance
+MovieLens Movies [0.000] Data Documentation
+Data Quality ISO [1.040] Inconclusive Evidence
+Data Documentation [0.000] Inscrutable Evidence
+Data Quality ISO [1.040] Misguided Evidence
+Data Documentation [0.000] Misguided Evidence
+Data Quality ISO [1.040] Unfair Outcomes
+Data Balance [0.000] Unfair Outcomes
+Data Balance [0.000] Transformative Effects
+Data Quality ISO [1.040] Traceability
+Data Balance [0.000] Traceability
+Data Documentation [0.000] Traceability

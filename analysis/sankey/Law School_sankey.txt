@@ -1,0 +1,13 @@
+Law School [4.054] Data Quality ISO
+Law School [0.000] Data Balance
+Law School [0.000] Data Documentation
+Data Quality ISO [1.014] Inconclusive Evidence
+Data Documentation [0.000] Inscrutable Evidence
+Data Quality ISO [1.014] Misguided Evidence
+Data Documentation [0.000] Misguided Evidence
+Data Quality ISO [1.014] Unfair Outcomes
+Data Balance [0.000] Unfair Outcomes
+Data Balance [0.000] Transformative Effects
+Data Quality ISO [1.014] Traceability
+Data Balance [0.000] Traceability
+Data Documentation [0.000] Traceability

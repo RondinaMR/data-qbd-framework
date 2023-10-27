@@ -1,0 +1,13 @@
+Bank Marketing [4.104] Data Quality ISO
+Bank Marketing [0.000] Data Balance
+Bank Marketing [0.000] Data Documentation
+Data Quality ISO [1.026] Inconclusive Evidence
+Data Documentation [0.000] Inscrutable Evidence
+Data Quality ISO [1.026] Misguided Evidence
+Data Documentation [0.000] Misguided Evidence
+Data Quality ISO [1.026] Unfair Outcomes
+Data Balance [0.000] Unfair Outcomes
+Data Balance [0.000] Transformative Effects
+Data Quality ISO [1.026] Traceability
+Data Balance [0.000] Traceability
+Data Documentation [0.000] Traceability
