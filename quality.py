@@ -488,7 +488,7 @@ class Quality:
         output_filename = output_path + dataset_name + ".csv"
         textfile = open(output_filename, "w")
         # this write the columns name
-        textfile.write("Dataset-Name,Can-Open,Com-I-1-DevA,Com-I-5,Acc-I-4,Con-I-3,Con-I-2-DevB,Con-I-4-DevC,Error\n")
+        textfile.write("Dataset-Name,Can-Open,Com-I-1-DevA,Com-I-5,Acc-I-4,Con-I-3-DevC,Con-I-2-DevB,Con-I-4-DevD,Error\n")
 
         print("\nurl: ", self._file_name)
 
