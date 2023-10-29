@@ -328,7 +328,7 @@ print(db_df)
 
 for index, row in dq_df.iterrows():
     # Extract dataset name and relevant columns for dq_sum
-    dataset_name = row["Dataset-Name"]
+    dataset_name = row["Dataset-Name"].replace(" ", "")
     dq_cols = ["Acc-I-4", "Com-I-1-DevA", "Com-I-5", "Con-I-2-DevB", "Con-I-3-DevC", "Con-I-4-DevD"]
 
     # Calculate dq_sum for the current dataset
