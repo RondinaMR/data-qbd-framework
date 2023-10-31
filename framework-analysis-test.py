@@ -4,7 +4,9 @@ import pandas as pd
 import numpy as np
 import os
 import matplotlib.pyplot as plt
+from matplotlib.sankey import Sankey
 import re
+import plotly.graph_objects as go
 
 # Set the maximum number of rows and columns to display
 pd.set_option('display.max_rows', None)  # Display all rows
@@ -43,7 +45,7 @@ def interpolate_color(min_color, max_color, value):
     return interpolated_color
 
 
-def modify_latex_table(input_tex_file, min_color, max_color,dataquality_rule=False):
+def modify_latex_table(input_tex_file, min_color, max_color, dataquality_rule=False):
     # Read the LaTeX file
     with open(input_tex_file, 'r') as f:
         tex_content = f.read()
@@ -182,8 +184,8 @@ f.close()
 # min_color = "#deebf7"
 # max_color = "#3182bd"
 # reds
-min_color = "#fc9272" #dark red 50% / dark red : "#de2d26"
-max_color = "#fee0d2" #light red
+min_color = "#fc9272"  # dark red 50% / dark red : "#de2d26"
+max_color = "#fee0d2"  # light red
 input_tex_file = 'tab_dataquality.tex'
 modify_latex_table(input_tex_file, min_color, max_color, dataquality_rule=True)
 print("Colors successfully added to the latex table!")
@@ -325,7 +327,7 @@ all_df = pd.concat(dfs, axis=0, ignore_index=True)
 db_df = all_df[["Dataset", "Feature", "Gini", "Shannon", "Simpson", "I.I.R."]]
 print(db_df)
 # ********** Sankey flow plot*************
-
+first = True
 for index, row in dq_df.iterrows():
     # Extract dataset name and relevant columns for dq_sum
     dataset_name = row["Dataset-Name"].replace(" ", "")
@@ -356,4 +358,60 @@ for index, row in dq_df.iterrows():
     # Save the text to a file
     with open(f"analysis/sankey/{dataset_name}_sankey.txt", "w") as file:
         file.write(text)
-print("Sankey text files generated.")
+    if first:
+        d_sum = (dq_sum + db_sum + dd_sum)
+        # fig = plt.figure()
+        # ax = fig.add_subplot(1, 1, 1, xticks=[], yticks=[],
+        #                      title="Flow Diagram of a Widget")
+        # sankey = Sankey(ax=ax, scale=0.025, offset=0.2,
+        #                 format='%.2f')
+        # first diagram, indexed by prior=0
+        # sankey.add(flows=[dq_sum, db_sum, dd_sum, 0 - d_sum],
+        #            orientations=[1, 0, -1, 0],
+        #            labels=['data quality', 'data balance', 'data documentation', 'output'],
+        #            trunklength=1.5)
+        # sankey.add(flows=[dq_sum, -dq_sum/4, -dq_sum/4, -dq_sum/4, -dq_sum/4],
+        #            orientations=[1, 1, 0, 0, -1],
+        #            labels=['data quality', 'inconclusive evidence', 'misguided evidence', 'unfair outcomes', 'traceability'],
+        #            trunklength=1.25, label='data quality')
+        # sankey.add(flows=[db_sum, -db_sum / 3, -db_sum / 3, -db_sum / 3],
+        #            orientations=[-1, 0, -1, -1],
+        #            labels=['data balance', 'unfair outcomes', 'transformative effects', 'traceability'],
+        #            trunklength=1.5, label='data balance')
+        # second diagram indexed by prior=1
+        # sankey.add(flows=[d_sum, -(d_)],
+        #            labels=['', 'output2'],
+        #            prior=0,
+        #            connect=(1, 0))
+        # sankey.finish()
+        # plt.show()
+        # plt.savefig(f'analysis/images/{dataset_name}_sankey.pdf', format="pdf")
+
+        source_labels = ['data quality', 'data balance', 'data documentation']
+        sink_labels = ['inconclusive evidence', 'inscrutable evidence', 'misguided evidence', 'unfair outcomes',
+                       'transformative effects', 'traceability']
+
+        dq_flows = [dq_sum / 4, dq_sum / 4, dq_sum / 4, dq_sum / 4]
+        db_flows = [db_sum / 3, db_sum / 3, db_sum / 3]
+        dd_flows = [dd_sum / 3, dd_sum / 3, dd_sum / 3]
+
+        fig = go.Figure(go.Sankey(
+            node=dict(
+                pad=15,
+                thickness=20,
+                line=dict(color="black", width=0.5),
+                label=source_labels + sink_labels,
+            ),
+            link=dict(
+                source=[0, 0, 0, 0, 1, 1, 1, 2, 2, 2],
+                target=[3, 5, 6, 8, 6, 7, 8, 4, 5, 8],
+                value=dq_flows + db_flows + dd_flows,
+            )
+        ))
+
+        fig.update_layout(title_text="Sankey Diagram")
+        fig.show()
+        fig.write_image(f'analysis/images/{dataset_name}_sankey.pdf')
+
+        first = False
+print("Sankey files generated.")
