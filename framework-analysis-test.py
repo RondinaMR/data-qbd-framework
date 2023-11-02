@@ -184,8 +184,8 @@ f.close()
 # min_color = "#deebf7"
 # max_color = "#3182bd"
 # reds
-min_color = "#fc9272"  # dark red 50% / dark red : "#de2d26"
-max_color = "#fee0d2"  # light red
+min_color = "#fc9272" #dark red 50% / dark red : "#de2d26"
+max_color = "#ffffff" #light red
 input_tex_file = 'tab_dataquality.tex'
 modify_latex_table(input_tex_file, min_color, max_color, dataquality_rule=True)
 print("Colors successfully added to the latex table!")
