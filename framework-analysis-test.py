@@ -184,8 +184,8 @@ f.close()
 # min_color = "#deebf7"
 # max_color = "#3182bd"
 # reds
-min_color = "#fc9272" #dark red 50% / dark red : "#de2d26"
-max_color = "#ffffff" #light red
+min_color = "#fc9272"  # dark red 50% / dark red : "#de2d26"
+max_color = "#ffffff"  # light red
 input_tex_file = 'tab_dataquality.tex'
 modify_latex_table(input_tex_file, min_color, max_color, dataquality_rule=True)
 print("Colors successfully added to the latex table!")
@@ -415,3 +415,32 @@ for index, row in dq_df.iterrows():
 
         first = False
 print("Sankey files generated.")
+
+# ********** Symbols *************
+import reportlab
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+
+# Definire le dimensioni del quadrato
+width = 100
+height = 100
+
+# Creare un oggetto PageSize per impostare le dimensioni della pagina
+page_size = letter.A4
+
+# Creare un oggetto Canvas per disegnare sul PDF
+canvas = canvas.Canvas(f'analysis/images/{dataset_name}_4-unfair-outcomes.pdf')
+
+# Impostare il colore di sfondo
+canvas.setFillColor('#FC9272')
+
+# Disegnare il quadrato
+canvas.rect(50, 50, width, height)
+
+# Scrivere il testo all'interno del quadrato
+text_width, text_height = canvas.stringWidth('Unfair outcomes', fontName='Helvetica-Bold', fontSize=24)
+canvas.drawString(50, 50 + (height - text_height) / 2, 'Unfair outcomes')
+
+# Salvare il PDF
+canvas.showPage()
+canvas.save()
