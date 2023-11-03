@@ -165,8 +165,15 @@ for i, filename in enumerate(sorted(filenames_DQ)):
 # Concatenate all the DataFrames into a single DataFrame
 all_df = pd.concat(dfs.values(), axis=0)
 dq_df = all_df[["Dataset-Name", "Acc-I-4", "Com-I-1-DevA", "Com-I-5", "Con-I-2-DevB", "Con-I-3-DevC", "Con-I-4-DevD"]]
+datasets_spaced_names = dq_df["Dataset-Name"].tolist()
+dq_df["Dataset-Name"] = dq_df["Dataset-Name"].str.replace(' ', '')
+dataset_names = dq_df["Dataset-Name"].tolist()
+dq_df.sort_values(by=['Dataset-Name'], inplace=True)
+dq_df = dq_df.rename(columns={"Dataset-Name": "Dataset"}).set_index("Dataset")
+dataset_dict = dict(zip(dataset_names, datasets_spaced_names))
 # "Dataset-Name", "Com-I-1-DevA(↑)", "Com-I-5(↑)", "Acc-I-4(↓)", "Con-I-3(↑)", "Con-I-2-DevB(↑)", "Con-I-4-DevC(↑)"
-print(dq_df)
+print("DQ_DF", dq_df)
+
 s = dq_df.style.format(precision=3, decimal=',').hide(level=0, axis=0)
 s.set_table_styles([
     {'selector': 'toprule', 'props': ':hline;'},
