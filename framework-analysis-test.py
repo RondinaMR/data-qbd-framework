@@ -71,6 +71,35 @@ def modify_latex_table(input_tex_file, min_color, max_color, dataquality_rule=Fa
         f.write(tex_content)
 
 
+def create_sankey_figure(dataset_name, dq_sum, db_sum, dd_sum):
+    d_sum = (dq_sum + db_sum + dd_sum)
+    dimensions_flow = [4, 3, 3]
+    source_labels = ['data quality', 'data balance', 'data documentation']
+    sink_labels = ['inconclusive evidence', 'inscrutable evidence', 'misguided evidence', 'unfair outcomes',
+                   'transformative effects', 'traceability']
+    dataset_flows = [dq_sum * dimensions_flow[0], db_sum * dimensions_flow[1], dd_sum * dimensions_flow[2]]
+    dq_flows = [1, 1, 1, 1]
+    db_flows = [1, 1, 1]
+    dd_flows = [1, 1, 1]
+
+    fig = go.Figure(go.Sankey(
+        node=dict(
+            pad=15,
+            thickness=20,
+            line=dict(color="black", width=0.5),
+            label=[dataset_name] + source_labels + sink_labels,
+        ),
+        link=dict(
+            source=[0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3],
+            target=[1, 2, 3, 4, 5, 7, 9, 7, 8, 9, 5, 6, 9],
+            value=dataset_flows + dq_flows + db_flows + dd_flows,
+        )
+    ))
+    # fig.update_layout(title_text=f"{dataset}")
+    # fig.show()
+    fig.write_image(f'analysis/images/{dataset}_sankey.pdf')
+
+
 # data_source = 'data/1_adult.data'
 # output_name = '1_Adult'
 # pretty_name = 'Adult'
@@ -334,94 +363,72 @@ all_df = pd.concat(dfs, axis=0, ignore_index=True)
 db_df = all_df[["Dataset", "Feature", "Gini", "Shannon", "Simpson", "I.I.R."]]
 print(db_df)
 # ********** Sankey flow plot*************
-first = True
-for index, row in dq_df.iterrows():
-    # Extract dataset name and relevant columns for dq_sum
-    dataset_name = row["Dataset-Name"].replace(" ", "")
-    dq_cols = ["Acc-I-4", "Com-I-1-DevA", "Com-I-5", "Con-I-2-DevB", "Con-I-3-DevC", "Con-I-4-DevD"]
+# Computation of the data quality risks sum
+dq_df_cols = ["Acc-I-4", "Com-I-1-DevA", "Com-I-5", "Con-I-2-DevB", "Con-I-3-DevC", "Con-I-4-DevD"]
+dq_df["risks_sum"] = dq_df[dq_df_cols].apply(
+    lambda row: row["Acc-I-4"] + (1 - row["Com-I-1-DevA"]) + (1 - row["Com-I-5"]) + (1 - row["Con-I-2-DevB"]) + row[
+        "Con-I-3-DevC"] + (1 - row["Con-I""-4-DevD"]), axis=1)
+# Data quality risks ratio (sum divided by the maximum risk possible)
+dq_df["risk_ratio"] = dq_df["risks_sum"].apply(lambda row: row / 6)
+print("Data Quality\n", dq_df)
 
-    # Calculate dq_sum for the current dataset
-    dq_sum = row[dq_cols].sum()
-    # Extract db_sum from db_df
-    db_sum = db_df.loc[db_df['Dataset'] == dataset_name, 'Simpson'].sum()
-    # Extract dd_sum from dd_df
-    dd_sum = dd_df.loc[dd_df['Dataset'] == dataset_name, 'Value'].sum()
+# Computation of the data balance risks sum
+# Group by "Dataset" and compute sum for each group
+db_aggregate_df = db_df.groupby('Dataset').agg(
+    {'Gini': lambda x: (1 - x).sum(), 'Shannon': lambda x: (1 - x).sum(), 'Simpson': lambda x: (1 - x).sum(),
+     'I.I.R.': lambda x: (1 - x).sum(), 'Feature': 'count'})
+# Calculate "risk_ratio"
+db_aggregate_df['simpson_risk_ratio'] = db_aggregate_df['Simpson'] / db_aggregate_df['Feature']
+print("Data Balance\n", db_aggregate_df)
 
-    # Create the text for the Sankey diagram
-    text = f"{dataset_name} [{dq_sum:.3f}] Data Quality ISO\n"
-    text += f"{dataset_name} [{db_sum:.3f}] Data Balance\n"
-    text += f"{dataset_name} [{dd_sum:.3f}] Data Documentation\n"
-    text += f"Data Quality ISO [{dq_sum / 4:.3f}] Inconclusive Evidence\n"
-    text += f"Data Documentation [{dd_sum / 3:.3f}] Inscrutable Evidence\n"
-    text += f"Data Quality ISO [{dq_sum / 4:.3f}] Misguided Evidence\n"
-    text += f"Data Documentation [{dd_sum / 3:.3f}] Misguided Evidence\n"
-    text += f"Data Quality ISO [{dq_sum / 4:.3f}] Unfair Outcomes\n"
-    text += f"Data Balance [{db_sum / 3:.3f}] Unfair Outcomes\n"
-    text += f"Data Balance [{db_sum / 3:.3f}] Transformative Effects\n"
-    text += f"Data Quality ISO [{dq_sum / 4:.3f}] Traceability\n"
-    text += f"Data Balance [{db_sum / 3:.3f}] Traceability\n"
-    text += f"Data Documentation [{dd_sum / 3:.3f}] Traceability\n"
+# Computation of the data documentation risks sum
+# Exclude "Overall Presence Average" metric
+dd_aggregate_df = dd_df[dd_df["Metric"] != "Overall Presence Average"]
+# Group by "Dataset" and compute sum for each group
+dd_aggregate_df = dd_aggregate_df.groupby('Dataset').agg({'Value': lambda x: (1 - x).sum()})
+# Calculate "risk_ratio"
+dd_aggregate_df['risk_ratio'] = dd_aggregate_df['Value'] / 6
+print("Data Documentation\n", dd_aggregate_df)
 
-    # Save the text to a file
-    with open(f"analysis/sankey/{dataset_name}_sankey.txt", "w") as file:
-        file.write(text)
-    if first:
-        d_sum = (dq_sum + db_sum + dd_sum)
-        # fig = plt.figure()
-        # ax = fig.add_subplot(1, 1, 1, xticks=[], yticks=[],
-        #                      title="Flow Diagram of a Widget")
-        # sankey = Sankey(ax=ax, scale=0.025, offset=0.2,
-        #                 format='%.2f')
-        # first diagram, indexed by prior=0
-        # sankey.add(flows=[dq_sum, db_sum, dd_sum, 0 - d_sum],
-        #            orientations=[1, 0, -1, 0],
-        #            labels=['data quality', 'data balance', 'data documentation', 'output'],
-        #            trunklength=1.5)
-        # sankey.add(flows=[dq_sum, -dq_sum/4, -dq_sum/4, -dq_sum/4, -dq_sum/4],
-        #            orientations=[1, 1, 0, 0, -1],
-        #            labels=['data quality', 'inconclusive evidence', 'misguided evidence', 'unfair outcomes', 'traceability'],
-        #            trunklength=1.25, label='data quality')
-        # sankey.add(flows=[db_sum, -db_sum / 3, -db_sum / 3, -db_sum / 3],
-        #            orientations=[-1, 0, -1, -1],
-        #            labels=['data balance', 'unfair outcomes', 'transformative effects', 'traceability'],
-        #            trunklength=1.5, label='data balance')
-        # second diagram indexed by prior=1
-        # sankey.add(flows=[d_sum, -(d_)],
-        #            labels=['', 'output2'],
-        #            prior=0,
-        #            connect=(1, 0))
-        # sankey.finish()
-        # plt.show()
-        # plt.savefig(f'analysis/images/{dataset_name}_sankey.pdf', format="pdf")
+for dataset in dataset_names:
+    if dataset in ["MovieLensMovies", "MovieLensUsers", "MovieLensRatings"]:
+        continue
+    dq_risk = dq_df.at[dataset, 'risk_ratio']
+    if dataset not in ["CommunitiesAndCrime", "MovieLensMovies", "MovieLensUsers", "MovieLensRatings"]:
+        db_risk = db_aggregate_df.at[dataset, 'simpson_risk_ratio']
+    dd_risk = dd_aggregate_df.at[dataset, 'risk_ratio']
+    create_sankey_figure(dataset_dict[dataset], dq_risk, db_risk, dd_risk)
 
-        source_labels = ['data quality', 'data balance', 'data documentation']
-        sink_labels = ['inconclusive evidence', 'inscrutable evidence', 'misguided evidence', 'unfair outcomes',
-                       'transformative effects', 'traceability']
+# for index, row in dq_df.iterrows():
+#     # Extract dataset name and relevant columns for dq_sum
+#     dataset_name = row["Dataset-Name"].replace(" ", "")
+#     dq_cols = ["Acc-I-4", "Com-I-1-DevA", "Com-I-5", "Con-I-2-DevB", "Con-I-3-DevC", "Con-I-4-DevD"]
+#     # Calculate dq_sum for the current dataset
+#     dq_sum = row[dq_cols].sum()
+#     # Extract db_sum from db_df
+#     db_sum = db_df.loc[db_df['Dataset'] == dataset_name, 'Simpson'].sum()
+#     # Extract dd_sum from dd_df
+#     dd_sum = dd_df.loc[dd_df['Dataset'] == dataset_name, 'Value'].sum()
+#
+#     # Create the text for the Sankey diagram
+#     text = f"{dataset_name} [{dq_sum:.3f}] Data Quality ISO\n"
+#     text += f"{dataset_name} [{db_sum:.3f}] Data Balance\n"
+#     text += f"{dataset_name} [{dd_sum:.3f}] Data Documentation\n"
+#     text += f"Data Quality ISO [{dq_sum / 4:.3f}] Inconclusive Evidence\n"
+#     text += f"Data Documentation [{dd_sum / 3:.3f}] Inscrutable Evidence\n"
+#     text += f"Data Quality ISO [{dq_sum / 4:.3f}] Misguided Evidence\n"
+#     text += f"Data Documentation [{dd_sum / 3:.3f}] Misguided Evidence\n"
+#     text += f"Data Quality ISO [{dq_sum / 4:.3f}] Unfair Outcomes\n"
+#     text += f"Data Balance [{db_sum / 3:.3f}] Unfair Outcomes\n"
+#     text += f"Data Balance [{db_sum / 3:.3f}] Transformative Effects\n"
+#     text += f"Data Quality ISO [{dq_sum / 4:.3f}] Traceability\n"
+#     text += f"Data Balance [{db_sum / 3:.3f}] Traceability\n"
+#     text += f"Data Documentation [{dd_sum / 3:.3f}] Traceability\n"
+#
+#     # Save the text to a file
+#     with open(f"analysis/sankey/{dataset_name}_sankey.txt", "w") as file:
+#         file.write(text)
 
-        dq_flows = [dq_sum / 4, dq_sum / 4, dq_sum / 4, dq_sum / 4]
-        db_flows = [db_sum / 3, db_sum / 3, db_sum / 3]
-        dd_flows = [dd_sum / 3, dd_sum / 3, dd_sum / 3]
-
-        fig = go.Figure(go.Sankey(
-            node=dict(
-                pad=15,
-                thickness=20,
-                line=dict(color="black", width=0.5),
-                label=source_labels + sink_labels,
-            ),
-            link=dict(
-                source=[0, 0, 0, 0, 1, 1, 1, 2, 2, 2],
-                target=[3, 5, 6, 8, 6, 7, 8, 4, 5, 8],
-                value=dq_flows + db_flows + dd_flows,
-            )
-        ))
-
-        fig.update_layout(title_text="Sankey Diagram")
-        fig.show()
-        fig.write_image(f'analysis/images/{dataset_name}_sankey.pdf')
-
-        first = False
-print("Sankey files generated.")
 
 # ********** Symbols *************
 from reportlab.lib import colors
