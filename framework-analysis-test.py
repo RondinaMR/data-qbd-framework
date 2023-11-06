@@ -7,6 +7,10 @@ import matplotlib.pyplot as plt
 from matplotlib.sankey import Sankey
 import re
 import plotly.graph_objects as go
+from reportlab.lib import colors
+from reportlab.graphics.shapes import *
+from reportlab.graphics import renderPDF
+from reportlab.lib.colors import HexColor
 
 # Set the maximum number of rows and columns to display
 pd.set_option('display.max_rows', None)  # Display all rows
@@ -71,16 +75,31 @@ def modify_latex_table(input_tex_file, min_color, max_color, dataquality_rule=Fa
         f.write(tex_content)
 
 
-def create_sankey_figure(dataset_name, dq_sum, db_sum, dd_sum):
+def create_sankey_figure(dataset_name, dq_sum, db_sum, dd_sum, version="unit_flows"):
     d_sum = (dq_sum + db_sum + dd_sum)
-    dimensions_flow = [4, 3, 3]
     source_labels = ['data quality', 'data balance', 'data documentation']
     sink_labels = ['inconclusive evidence', 'inscrutable evidence', 'misguided evidence', 'unfair outcomes',
                    'transformative effects', 'traceability']
-    dataset_flows = [dq_sum * dimensions_flow[0], db_sum * dimensions_flow[1], dd_sum * dimensions_flow[2]]
-    dq_flows = [1, 1, 1, 1]
-    db_flows = [1, 1, 1]
-    dd_flows = [1, 1, 1]
+    sankey_versions = {
+        "unit_flows": {
+            "dq_flows": [1, 1, 1, 1],
+            "db_flows": [1, 1, 1],
+            "dd_flows": [1, 1, 1],
+            "dataset_flows": [dq_sum * 4, db_sum * 3, dd_sum * 3]
+        },
+        "unit_challenges": {
+            "dq_flows": [1, 0.5, 0.25, 0.333],
+            "db_flows": [0.75, 1, 0.333],
+            "dd_flows": [0.5, 1, 0.333],
+            "dataset_flows": [dq_sum * 2.083, db_sum * 2.083, dd_sum * 2.083]
+        },
+        "dimensional_flows": {
+            "dq_flows": [dq_sum / 4, dq_sum / 4, dq_sum / 4, dq_sum / 4],
+            "db_flows": [db_sum / 3, db_sum / 3, db_sum / 3],
+            "dd_flows": [dd_sum / 3, dd_sum / 3, dd_sum / 3],
+            "dataset_flows": [dq_sum, db_sum, dd_sum]
+        }
+    }
 
     fig = go.Figure(go.Sankey(
         node=dict(
@@ -92,12 +111,75 @@ def create_sankey_figure(dataset_name, dq_sum, db_sum, dd_sum):
         link=dict(
             source=[0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3],
             target=[1, 2, 3, 4, 5, 7, 9, 7, 8, 9, 5, 6, 9],
-            value=dataset_flows + dq_flows + db_flows + dd_flows,
+            value=sankey_versions[version]["dataset_flows"] + sankey_versions[version]["dq_flows"] +
+                  sankey_versions[version]["db_flows"] +
+                  sankey_versions[version]["dd_flows"],
         )
     ))
     # fig.update_layout(title_text=f"{dataset}")
     # fig.show()
-    fig.write_image(f'analysis/images/{dataset}_sankey.pdf')
+    fig.write_image(f'analysis/images/{dataset}_sankey_{version}.pdf')
+
+
+def create_labels(dataset_name, dq_risk, db_risk, dd_risk, min_color, max_color):
+    ethical_challenges = {
+        "1_inconclusive_evidence": {
+            "risk": dq_risk,
+            "dim": 1,
+            "line1": "Inconclusive",
+            "line2": "evidence"
+        },
+        "2_inscrutable_evidence": {
+            "risk": dq_risk + dd_risk,
+            "dim": 2,
+            "line1": "Inscrutable",
+            "line2": "evidence"
+        },
+        "3_misguided_evidence": {
+            "risk": dd_risk,
+            "dim": 1,
+            "line1": "Misguided",
+            "line2": "evidence"
+        },
+        "4_unfair_outcomes": {
+            "risk": dq_risk + db_risk,
+            "dim": 2,
+            "line1": "Unfair",
+            "line2": "outcomes"
+        },
+        "5_transformative_effects": {
+            "risk": db_risk,
+            "dim": 1,
+            "line1": "Transformative",
+            "line2": "effects"
+        },
+        "6_traceability": {
+            "risk": dq_risk + db_risk + dd_risk,
+            "dim": 3,
+            "line1": "Traceability",
+            "line2": "evidence"
+        },
+    }
+    font_properties = {
+        "fontSize": 40,
+        "fontName": "Courier",
+        "fillColor": colors.black
+    }
+
+    for ethical_challenge in ethical_challenges:
+        ratio = ethical_challenges[ethical_challenge]["risk"] / ethical_challenges[ethical_challenge]["dim"]
+        d = Drawing(400, 400)
+        d.add(Rect(0, 0, 400, 400, fillColor=HexColor(f"#{interpolate_color(min_color, max_color, ratio)}")))
+        d.add(Rect(375, 0, 25, 400, fillColor=colors.white))
+        d.add(Rect(375, 0, 25, ratio * 400, fillColor=colors.darkred))
+        d.add(String(18, 250, ethical_challenges[ethical_challenge]["line1"], fontSize=font_properties["fontSize"],
+                     fontName=font_properties["fontName"], fillColor=font_properties["fillColor"]))
+        if ethical_challenges[ethical_challenge]["line2"] != "":
+            d.add(String(18, 150, ethical_challenges[ethical_challenge]["line2"], fontSize=font_properties["fontSize"],
+                         fontName=font_properties["fontName"], fillColor=font_properties["fillColor"]))
+
+        renderPDF.drawToFile(d, f'analysis/images/labels/{dataset}_label_{ethical_challenge}.pdf',
+                             f'{dataset}_label_{ethical_challenge}')
 
 
 # data_source = 'data/1_adult.data'
@@ -391,13 +473,16 @@ dd_aggregate_df['risk_ratio'] = dd_aggregate_df['Value'] / 6
 print("Data Documentation\n", dd_aggregate_df)
 
 for dataset in dataset_names:
-    if dataset in ["MovieLensMovies", "MovieLensUsers", "MovieLensRatings"]:
+    if dataset in ["MovieLensMovies", "MovieLensUsers", "MovieLensRatings", "CommunitiesAndCrime"]:
         continue
     dq_risk = dq_df.at[dataset, 'risk_ratio']
-    if dataset not in ["CommunitiesAndCrime", "MovieLensMovies", "MovieLensUsers", "MovieLensRatings"]:
-        db_risk = db_aggregate_df.at[dataset, 'simpson_risk_ratio']
+    # if dataset not in ["CommunitiesAndCrime", "MovieLensMovies", "MovieLensUsers", "MovieLensRatings"]:
+    db_risk = db_aggregate_df.at[dataset, 'simpson_risk_ratio']
     dd_risk = dd_aggregate_df.at[dataset, 'risk_ratio']
-    create_sankey_figure(dataset_dict[dataset], dq_risk, db_risk, dd_risk)
+    create_sankey_figure(dataset_dict[dataset], dq_risk, db_risk, dd_risk, "unit_flows")
+    create_sankey_figure(dataset_dict[dataset], dq_risk, db_risk, dd_risk, "unit_challenges")
+    create_sankey_figure(dataset_dict[dataset], dq_risk, db_risk, dd_risk, "dimensional_flows")
+    create_labels(dataset_dict[dataset], dq_risk, db_risk, dd_risk, max_color, min_color)
 
 # for index, row in dq_df.iterrows():
 #     # Extract dataset name and relevant columns for dq_sum
@@ -428,25 +513,3 @@ for dataset in dataset_names:
 #     # Save the text to a file
 #     with open(f"analysis/sankey/{dataset_name}_sankey.txt", "w") as file:
 #         file.write(text)
-
-
-# ********** Symbols *************
-from reportlab.lib import colors
-from reportlab.graphics.shapes import *
-from reportlab.graphics import renderPDF
-
-fontProperties = {
-    "fontSize": 70,
-    "fontName": "Courier",
-    "fillColor": colors.white
-}
-# for dataset in dataset_names:
-for dataset in ["Adult"]:
-    d = Drawing(400, 400)
-    d.add(Rect(0, 0, 400, 400, fillColor=colors.red))
-    d.add(String(35, 250, 'Unfair', fontSize=fontProperties["fontSize"],
-                 fontName=fontProperties["fontName"], fillColor=fontProperties["fillColor"]))
-    d.add(String(35, 100, 'Outcomes', fontSize=fontProperties["fontSize"],
-                 fontName=fontProperties["fontName"], fillColor=fontProperties["fillColor"]))
-
-    renderPDF.drawToFile(d, f'analysis/images/{dataset}_4-unfairoutcomes.pdf', f'{dataset}_4-unfairoutcomes')
