@@ -168,6 +168,7 @@ def create_labels(dataset_name, dq_risk, db_risk, dd_risk, min_color, max_color)
 
     for ethical_challenge in ethical_challenges:
         ratio = ethical_challenges[ethical_challenge]["risk"] / ethical_challenges[ethical_challenge]["dim"]
+        print(dataset_name, ethical_challenge, f'{ratio*100:.2f}%')
         d = Drawing(400, 400)
         d.add(Rect(0, 0, 400, 400, fillColor=HexColor(f"#{interpolate_color(min_color, max_color, ratio)}")))
         d.add(Rect(375, 0, 25, 400, fillColor=colors.white))
