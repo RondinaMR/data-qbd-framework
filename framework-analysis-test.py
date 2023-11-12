@@ -446,6 +446,16 @@ for i, filename in enumerate(sorted(filenames_DTS)):
 all_df = pd.concat(dfs, axis=0, ignore_index=True)
 db_df = all_df[["Dataset", "Feature", "Gini", "Shannon", "Simpson", "I.I.R."]]
 print(db_df)
+s = db_df.style.format(precision=3, decimal=',').hide(level=0, axis=0)
+s.set_table_styles([
+    {'selector': 'toprule', 'props': ':hline;'},
+    {'selector': 'bottomrule', 'props': ':hline;'},
+    {'selector': 'midrule', 'props': ':hline;'},
+], overwrite=True)
+f = open("tab_databalance.tex", "w")
+f.write(s.to_latex(column_format="|l|r|", position="t", label="tab:dts-average",
+                   caption="Data balance measurements"))
+f.close()
 # ********** Sankey flow plot*************
 # Computation of the data quality risks sum
 dq_df_cols = ["Acc-I-4", "Com-I-1-DevA", "Com-I-5", "Con-I-2-DevB", "Con-I-3-DevC", "Con-I-4-DevD"]
