@@ -310,10 +310,10 @@ modify_latex_table(input_tex_file, min_color, max_color, dataquality_rule=True)
 print("Colors successfully added to the latex table!")
 
 # Calculate the average for each column (excluding 'Dataset-Name')
-average_values = dq_df.iloc[:, 1:].mean()
-medians = dq_df.iloc[:, 1:].median()
-q1_values = dq_df.iloc[:, 1:].quantile(0.25)
-q3_values = dq_df.iloc[:, 1:].quantile(0.75)
+average_values = dq_df.iloc[:, :].mean()
+medians = dq_df.iloc[:, :].median()
+q1_values = dq_df.iloc[:, :].quantile(0.25)
+q3_values = dq_df.iloc[:, :].quantile(0.75)
 # Create a new DataFrame with the averages
 dqsummary_df = pd.DataFrame({
     # 'Metric': metrics,
