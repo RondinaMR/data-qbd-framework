@@ -331,6 +331,7 @@ dqsummary_df = dqsummary_df.sort_values(by='Metric', ascending=True)
 dqsummary_df['Metric'] = dqsummary_df['Metric'].apply(
     lambda x: f"{x}(↓)" if (x == "Acc-I-4" or x == "Con-I-3-DevC") else f"{x}(↑)")
 # Print the resulting DataFrame
+print("dqsummary_df")
 print(dqsummary_df)
 # Select only the "Metric" and "Average" columns
 dqsummary_tocsv_df = dqsummary_df[['Metric', 'Average']]
