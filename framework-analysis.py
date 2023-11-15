@@ -1,3 +1,5 @@
+from imbalance import Imbalance
+from quality import Quality
 import pandas as pd
 import matplotlib.pyplot as plt
 from reportlab.graphics.shapes import *
