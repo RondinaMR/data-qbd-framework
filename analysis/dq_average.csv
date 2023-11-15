@@ -1,0 +1,7 @@
+Metric,Average
+Acc-I-4(↓),0.0426
+Com-I-1-DevA(↑),0.9964999999999999
+Com-I-5(↑),1.0
+Con-I-2-DevB(↑),0.9821
+Con-I-3-DevC(↓),0.1306
+Con-I-4-DevD(↑),1.0

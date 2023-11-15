@@ -238,11 +238,12 @@ def risk_of_dataset_inaccuracy(df, n_columns, n_rows):
 
 # Consistency measures------------------------------------------------------------------>
 
+# Con-I-3
 def risk_of_data_inconsistency(df, n_columns):
-    # Con-I-3
     total_elements = 0
     field_array = []
     single_duplication = []
+    n_rows = len(df)
     for i in range(0, n_columns):
         print("column: ", i, end='; ')
         value_list = df.iloc[:, i].tolist()  # [a,b,c]
@@ -250,14 +251,16 @@ def risk_of_data_inconsistency(df, n_columns):
         field_array.append(value_list)  # I need this for the second computation --> [[value_list1],[value_list2],..]
         duplication_sum = sum(return_n_duplicates(value_list))
         single_duplication.append(duplication_sum)
+    total_possible_duplications = n_rows * (n_columns + (n_columns * (n_columns - 1) / 2)) if n_columns > 1 else n_rows * n_columns
     print("\ntotal elements: ", total_elements)
+    print(f"\ntotal possible duplications {total_possible_duplications} ({n_rows} rows, {n_columns} columns)")
     print("single duplication: ", single_duplication)
     total_single_duplication = sum(single_duplication)
     print("total_single_duplication: ", total_single_duplication)
     total_multiple_duplication = compute_duplication_multiple_columns(field_array)
     print("total_multiple_duplication: ", total_multiple_duplication)
     final_total = total_multiple_duplication + total_single_duplication
-    ratio = round(final_total / total_elements, n_of_decimal)
+    ratio = round(final_total / total_possible_duplications, n_of_decimal)
     print("ISO CON-I-3: risk_of_data_inconsistency:", ratio)
     return ratio
 
@@ -293,8 +296,8 @@ def compute_duplication_multiple_columns(big_array):
 ## Not ISO
 
 def empty_cells(df, n_rows, n_col):
-    n_nan = df.isna().sum().sum()
-    ratio = round(n_nan / (n_rows * n_col), n_of_decimal)
+    n_notnan = df.notna().sum().sum()
+    ratio = round(n_notnan / (n_rows * n_col), n_of_decimal)
     print("\nISO Related: ratio of empty cells: ", ratio)
     print()
     return ratio
@@ -319,7 +322,7 @@ def risk_type_inconsistency(df, n_col):
             print(type_counter)
             min_element = min(type_counter)
             n_no_consistency += min_element  # the type that repreents the minority of the elements is the error
-    ratio = round(n_no_consistency / n_data_evaluated, n_of_decimal)
+    ratio = 1-round(n_no_consistency / n_data_evaluated, n_of_decimal)
     print("\nISO Related: Risk of type inconsistency", ratio)
     return ratio
 
@@ -451,6 +454,7 @@ def detect_encoding(fileobj):
     # Read the first three bytes from the file
     fileobj.seek(0)
     byte_str = fileobj.read(3)
+    fileobj.seek(0) #reset the read position
 
     # Check if the first two bytes match the expected encoding
     if len(byte_str) == 3:
@@ -484,7 +488,7 @@ class Quality:
         output_filename = output_path + dataset_name + ".csv"
         textfile = open(output_filename, "w")
         # this write the columns name
-        textfile.write("Dataset-Name,Can-Open,Com-I-1-DevA,Com-I-5,Acc-I-4,Con-I-3,Con-I-2-DevB,Con-I-4-DevC,Error\n")
+        textfile.write("Dataset-Name,Can-Open,Com-I-1-DevA,Com-I-5,Acc-I-4,Con-I-3-DevC,Con-I-2-DevB,Con-I-4-DevD,Error\n")
 
         print("\nurl: ", self._file_name)
 
