@@ -286,19 +286,15 @@ s.set_table_styles([
     {'selector': 'midrule', 'props': ':hline;'},
 ], overwrite=True)
 # s.background_gradient(axis=0)
-f = open("tab_dataquality.tex", "w")
+f = open("analysis/latex/tab_dataquality.tex", "w")
 f.write(s.to_latex(column_format="|p{2cm}|r|r|r|r|r|r|", position="t", label="tab:dataquality",
                    caption="Data quality measurements"))
 f.close()
 
 # Add colors to the latex table
-# # blue
-# min_color = "#deebf7"
-# max_color = "#3182bd"
-# reds
-min_color = "#fc9272"  # dark red 50% / dark red : "#de2d26"
-max_color = "#ffffff"  # light red
-input_tex_file = 'tab_dataquality.tex'
+min_color = "#fc9272"  # dark red 50%
+max_color = "#ffffff"  # white
+input_tex_file = 'analysis/latex/tab_dataquality.tex'
 modify_latex_table(input_tex_file, min_color, max_color, dataquality_rule=True)
 print("Colors successfully added to the latex table!")
 
@@ -347,7 +343,6 @@ plt.xlim(0, 1)  # Set the x-axis limits from 0 to 1
 plt.grid(axis='x', linestyle='--', alpha=0.6)  # Add grid lines for reference
 plt.tight_layout()
 plt.gca().invert_yaxis()  # Invert the y-axis to display from top to bottom
-# plt.savefig('analysis/images/quality_measures_plot.svg', format="svg")
 plt.savefig('analysis/images/quality_measures_plot.pdf', format="pdf")
 plt.show()
 
@@ -370,11 +365,11 @@ s.set_table_styles([
     {'selector': 'bottomrule', 'props': ':hline;'},
     {'selector': 'midrule', 'props': ':hline;'},
 ], overwrite=True)
-f = open("tab_dts.tex", "w")
+f = open("analysis/latex/tab_dts.tex", "w")
 f.write(s.to_latex(column_format="|p{2cm}|r|r|r|r|r|r|", position="t", label="tab:dts_all",
                    caption="Documentation measurements"))
 f.close()
-input_tex_file = 'tab_dts.tex'
+input_tex_file = 'analysis/latex/tab_dts.tex'
 modify_latex_table(input_tex_file, min_color, max_color)
 print("Colors successfully added to the latex table!")
 # Group by 'Metric' and calculate the average, median, 1st quartile, and 3rd quartile of 'Value'
@@ -396,7 +391,7 @@ s.set_table_styles([
     {'selector': 'bottomrule', 'props': ':hline;'},
     {'selector': 'midrule', 'props': ':hline;'},
 ], overwrite=True)
-f = open("tab_dts_average.tex", "w")
+f = open("analysis/latex/tab_dts_average.tex", "w")
 f.write(s.to_latex(column_format="|l|r|", position="t", label="tab:dts-average",
                    caption="Data documentation measurements"))
 f.close()
@@ -422,10 +417,10 @@ plt.yticks(fontsize=22)
 # Display the plot
 plt.tight_layout()
 plt.gca().invert_yaxis()  # Invert the y-axis to display from top to bottom
-# plt.savefig('analysis/images/presence_average_plot.svg', format="svg")
 plt.savefig('analysis/images/presence_average_plot.pdf', format="pdf")
 plt.show()
 plt.show()
+
 # ********** Data balance (DB)*************
 # Find all _DQ.csv files in the analysis directory
 filenames_DTS = [f for f in os.listdir("analysis/") if f.endswith("_DB.csv")]
@@ -445,11 +440,12 @@ s.set_table_styles([
     {'selector': 'bottomrule', 'props': ':hline;'},
     {'selector': 'midrule', 'props': ':hline;'},
 ], overwrite=True)
-f = open("tab_databalance.tex", "w")
+f = open("analysis/latex/tab_databalance.tex", "w")
 f.write(s.to_latex(column_format="|l|r|", position="t", label="tab:dts-average",
                    caption="Data balance measurements"))
 f.close()
-# ********** Sankey flow plot*************
+
+# ********** Ethical Challenge Risk Labels *************
 # Computation of the data quality risks sum
 dq_df_cols = ["Acc-I-4", "Com-I-1-DevA", "Com-I-5", "Con-I-2-DevB", "Con-I-3-DevC", "Con-I-4-DevD"]
 dq_df["risks_sum"] = dq_df[dq_df_cols].apply(
@@ -489,32 +485,3 @@ for dataset in dataset_names:
     create_sankey_figure(dataset_dict[dataset], dq_risk, db_risk, dd_risk, "dimensional_flows")
     create_labels(dataset_dict[dataset], dq_risk, db_risk, dd_risk, max_color, min_color)
 
-# for index, row in dq_df.iterrows():
-#     # Extract dataset name and relevant columns for dq_sum
-#     dataset_name = row["Dataset-Name"].replace(" ", "")
-#     dq_cols = ["Acc-I-4", "Com-I-1-DevA", "Com-I-5", "Con-I-2-DevB", "Con-I-3-DevC", "Con-I-4-DevD"]
-#     # Calculate dq_sum for the current dataset
-#     dq_sum = row[dq_cols].sum()
-#     # Extract db_sum from db_df
-#     db_sum = db_df.loc[db_df['Dataset'] == dataset_name, 'Simpson'].sum()
-#     # Extract dd_sum from dd_df
-#     dd_sum = dd_df.loc[dd_df['Dataset'] == dataset_name, 'Value'].sum()
-#
-#     # Create the text for the Sankey diagram
-#     text = f"{dataset_name} [{dq_sum:.3f}] Data Quality ISO\n"
-#     text += f"{dataset_name} [{db_sum:.3f}] Data Balance\n"
-#     text += f"{dataset_name} [{dd_sum:.3f}] Data Documentation\n"
-#     text += f"Data Quality ISO [{dq_sum / 4:.3f}] Inconclusive Evidence\n"
-#     text += f"Data Documentation [{dd_sum / 3:.3f}] Inscrutable Evidence\n"
-#     text += f"Data Quality ISO [{dq_sum / 4:.3f}] Misguided Evidence\n"
-#     text += f"Data Documentation [{dd_sum / 3:.3f}] Misguided Evidence\n"
-#     text += f"Data Quality ISO [{dq_sum / 4:.3f}] Unfair Outcomes\n"
-#     text += f"Data Balance [{db_sum / 3:.3f}] Unfair Outcomes\n"
-#     text += f"Data Balance [{db_sum / 3:.3f}] Transformative Effects\n"
-#     text += f"Data Quality ISO [{dq_sum / 4:.3f}] Traceability\n"
-#     text += f"Data Balance [{db_sum / 3:.3f}] Traceability\n"
-#     text += f"Data Documentation [{dd_sum / 3:.3f}] Traceability\n"
-#
-#     # Save the text to a file
-#     with open(f"analysis/sankey/{dataset_name}_sankey.txt", "w") as file:
-#         file.write(text)
