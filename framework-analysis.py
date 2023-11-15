@@ -1,6 +1,5 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import plotly.graph_objects as go
 from reportlab.graphics.shapes import *
 from reportlab.graphics import renderPDF
 from reportlab.lib.colors import HexColor
@@ -66,52 +65,6 @@ def modify_latex_table(input_tex_file, min_color, max_color, dataquality_rule=Fa
     # Write the modified content back to the file
     with open(input_tex_file, 'w') as f:
         f.write(tex_content)
-
-
-def create_sankey_figure(dataset_name, dq_sum, db_sum, dd_sum, version="unit_flows"):
-    d_sum = (dq_sum + db_sum + dd_sum)
-    source_labels = ['data quality', 'data balance', 'data documentation']
-    sink_labels = ['inconclusive evidence', 'inscrutable evidence', 'misguided evidence', 'unfair outcomes',
-                   'transformative effects', 'traceability']
-    sankey_versions = {
-        "unit_flows": {
-            "dq_flows": [1, 1, 1, 1],
-            "db_flows": [1, 1, 1],
-            "dd_flows": [1, 1, 1],
-            "dataset_flows": [dq_sum * 4, db_sum * 3, dd_sum * 3]
-        },
-        "unit_challenges": {
-            "dq_flows": [1, 0.5, 0.25, 0.333],
-            "db_flows": [0.75, 1, 0.333],
-            "dd_flows": [0.5, 1, 0.333],
-            "dataset_flows": [dq_sum * 2.083, db_sum * 2.083, dd_sum * 2.083]
-        },
-        "dimensional_flows": {
-            "dq_flows": [dq_sum / 4, dq_sum / 4, dq_sum / 4, dq_sum / 4],
-            "db_flows": [db_sum / 3, db_sum / 3, db_sum / 3],
-            "dd_flows": [dd_sum / 3, dd_sum / 3, dd_sum / 3],
-            "dataset_flows": [dq_sum, db_sum, dd_sum]
-        }
-    }
-
-    fig = go.Figure(go.Sankey(
-        node=dict(
-            pad=15,
-            thickness=20,
-            line=dict(color="black", width=0.5),
-            label=[dataset_name] + source_labels + sink_labels,
-        ),
-        link=dict(
-            source=[0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3],
-            target=[1, 2, 3, 4, 5, 7, 9, 7, 8, 9, 5, 6, 9],
-            value=sankey_versions[version]["dataset_flows"] + sankey_versions[version]["dq_flows"] +
-                  sankey_versions[version]["db_flows"] +
-                  sankey_versions[version]["dd_flows"],
-        )
-    ))
-    # fig.update_layout(title_text=f"{dataset}")
-    # fig.show()
-    fig.write_image(f'analysis/images/{dataset}_sankey_{version}.pdf')
 
 
 def create_labels(dataset_name, dq_risk, db_risk, dd_risk, min_color, max_color):
@@ -480,8 +433,5 @@ for dataset in dataset_names:
     # if dataset not in ["CommunitiesAndCrime", "MovieLensMovies", "MovieLensUsers", "MovieLensRatings"]:
     db_risk = db_aggregate_df.at[dataset, 'simpson_risk_ratio']
     dd_risk = dd_aggregate_df.at[dataset, 'risk_ratio']
-    create_sankey_figure(dataset_dict[dataset], dq_risk, db_risk, dd_risk, "unit_flows")
-    create_sankey_figure(dataset_dict[dataset], dq_risk, db_risk, dd_risk, "unit_challenges")
-    create_sankey_figure(dataset_dict[dataset], dq_risk, db_risk, dd_risk, "dimensional_flows")
     create_labels(dataset_dict[dataset], dq_risk, db_risk, dd_risk, max_color, min_color)
 
