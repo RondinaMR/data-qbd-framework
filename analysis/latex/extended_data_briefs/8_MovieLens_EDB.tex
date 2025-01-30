@@ -1,0 +1,28 @@
+\begin{table}[h]
+    \caption{Application of the framework measures to the MovieLens dataset. The arrows indicate the best value for each QM (0: $\downarrow$, 1: $\uparrow$). *: Fields inherited from the Data Brief \cite{fabrisAlgorithmicFairnessDatasets2022}.}
+    \label{tab:MovieLens}
+    \begin{tabular}{|p{3cm}|p{1.9cm}p{3cm}p{2.6cm}p{1.6cm}|}
+        \hline
+        \textbf{Dataset name} & \multicolumn{2}{l|}{MovieLens} & \multicolumn{1}{l|}{\textbf{Date of analysis}} & 05/30/2023 \\ \hline
+        \textbf{Description*} & \multicolumn{4}{p{10cm}|}{First released in 1998, MovieLens datasets represent user ratings from the movie recommender platform run by the GroupLens research group from the University of Minnesota. While different datasets have been released by GroupLens, in this section we concentrate on MovieLens 1M, the one predominantly used in fairness research. User-system interactions take the form of a quadruple (UserID, MovieID, Rating, Timestamp), with ratings expressed on a 1-5 star scale. The dataset also reports user demographics such as age and gender, which is voluntarily provided by the users.} \\ \hline
+        \textbf{Landing page*} & \multicolumn{4}{l|}{\href{https://grouplens.org/datasets/movielens/1m/}{https://grouplens.org/datasets/movielens/1m/}} \\ \hline
+        \textbf{Sample size*} & $\sim$1M reviews, $\sim$6K users, $\sim$4K movies & \multicolumn{1}{|l}{\textbf{Domain*}} & \multicolumn{2}{|l|}{information systems,movies}  \\ \hline
+        \textbf{Last update*} & 2003 & \multicolumn{1}{|p{3cm}}{\textbf{Data specification*}} & \multicolumn{2}{|l|}{tabular data} \\ \hline
+        \textbf{Creator affiliation*} & \multicolumn{4}{l|}{University of Minnesota} \\ \hline\hline
+        \multicolumn{2}{|l|}{\textbf{Standard data quality} (\textsc{dq})} & \multicolumn{3}{|l|}{\textbf{Data documentation} (\textsc{dd})}\\ \hline
+        Measure & Value & \multicolumn{2}{|l|}{Measure (Presence Average)} & Value ($\uparrow$) \\ \hline
+        Acc-I-4 ($\downarrow$) & 0,03\cellcolor[HTML]{FEFCFB} & \multicolumn{2}{|l|}{Overall} & 0,41\cellcolor[HTML]{FDBEAB} \\
+        Com-I-1-DevA ($\uparrow$) & 1,00\cellcolor[HTML]{FFFFFF} & \multicolumn{2}{|l|}{1 Motivation} & 0,67\cellcolor[HTML]{FEDAD0} \\
+        Com-I-5 ($\uparrow$) & 1,00\cellcolor[HTML]{FFFFFF} & \multicolumn{2}{|l|}{2 Composition} & 0,29\cellcolor[HTML]{FCB19A} \\
+        Con-I-2-DevB ($\uparrow$) & 1,00\cellcolor[HTML]{FEFEFE} & \multicolumn{2}{|l|}{3 Collection processes} & 0,71\cellcolor[HTML]{FEDFD6} \\
+        Con-I-3-DevC ($\downarrow$) & 0,24\cellcolor[HTML]{FEE4DD} & \multicolumn{2}{|l|}{4 Data processing procedures} & 0,33\cellcolor[HTML]{FDB6A0} \\
+        Con-I-4-DevD ($\uparrow$) & 1,00\cellcolor[HTML]{FFFFFF} & \multicolumn{2}{|l|}{5 Uses} & 0,20\cellcolor[HTML]{FCA78E} \\ 
+         & & \multicolumn{2}{|l|}{6 Maintenance} & 0,43\cellcolor[HTML]{FDC0AE} \\ \hline
+        \multicolumn{5}{|l|}{\textbf{Data balance} (\textsc{db})} \\ \hline 
+ 		Sensitive Feature & Gini ($\uparrow$) & Shannon ($\uparrow$) & Simpson ($\uparrow$) & I.I.R. ($\uparrow$) \\ \hline
+        Gender & 0,74 & 0,81 & 0,59 & 0,33 \\
+		Occupation & 0,97 & 0,90 & 0,60 & 0,02\cellcolor[HTML]{fc8d59} \\
+		Zip-code & 1,00 & 0,93 & 0,37 & 0,01\cellcolor[HTML]{fc8d59} \\
+		 \hline
+    \end{tabular}
+\end{table}

@@ -1,0 +1,10 @@
+key,value
+name,Bank Marketing
+description,"Often simply called Bank dataset in the fairness literature, this resource was produced to support a study of success factors in telemarketing of long-term deposits within a Portuguese bank, with data collected over the period 2008–2010. Each data point represents a telemarketing phone call and includes client-specific features (e.g. job, education), features about the marketing phone call (e.g. day of the week and duration) and meaningful environmental features (e.g. euribor). The classification target is a binary variable indicating client subscription to a term deposit."
+affiliation_of_creators,"ISTAR-ISCTE-IUL; University of Minho."
+domain,marketing
+data_specification,tabular data
+sample_size,~40K
+year,2012
+link_url,https://archive.ics.uci.edu/ml/datasets/Bank+Marketing
+link_show,https://archive.ics.uci.edu/ml/datasets/Bank+Marketing

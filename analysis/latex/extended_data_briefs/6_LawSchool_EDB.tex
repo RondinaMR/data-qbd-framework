@@ -1,0 +1,30 @@
+\begin{table}[h]
+    \caption{Application of the framework measures to the Law School dataset. The arrows indicate the best value for each QM (0: $\downarrow$, 1: $\uparrow$). *: Fields inherited from the Data Brief \cite{fabrisAlgorithmicFairnessDatasets2022}.}
+    \label{tab:LawSchool}
+    \begin{tabular}{|p{3cm}|p{1.9cm}p{3cm}p{2.6cm}p{1.6cm}|}
+        \hline
+        \textbf{Dataset name} & \multicolumn{2}{l|}{Law School} & \multicolumn{1}{l|}{\textbf{Date of analysis}} & 03/25/2023 \\ \hline
+        \textbf{Description*} & \multicolumn{4}{p{10cm}|}{This dataset was collected to study performance in law school and bar examination of minority examinees in connection with affirmative action programs established after 1967 and subsequent anecdotal reports suggesting low bar passage rates for black examinees. Students, law schools, and state boards of bar examiners contributed to this dataset. The study tracks students who entered law school in fall 1991 through three or more years of law school and up to five administrations of the bar examination. Variables include demographics of candidates (e.g. age, race, sex), their academic performance (undergraduate GPA, law school admission test, and GPA), personal condition (e.g. financial responsibility for others during law school) along with information about law schools and bar exams (e.g. geographical area where it was taken). The associated task in machine learning is prediction of passage of the bar exam.} \\ \hline
+        \textbf{Landing page*} & \multicolumn{4}{l|}{\href{https://storage.googleapis.com/lawschool_dataset/bar_pass_prediction.csv}{https://storage.googleapis.com/lawschool[...]}} \\ \hline
+        \textbf{Sample size*} & $\sim$20K & \multicolumn{1}{|l}{\textbf{Domain*}} & \multicolumn{2}{|l|}{education}  \\ \hline
+        \textbf{Last update*} & 1998 & \multicolumn{1}{|p{3cm}}{\textbf{Data specification*}} & \multicolumn{2}{|l|}{tabular data} \\ \hline
+        \textbf{Creator affiliation*} & \multicolumn{4}{l|}{Law School Admission Council (LSAC)} \\ \hline\hline
+        \multicolumn{2}{|l|}{\textbf{Standard data quality} (\textsc{dq})} & \multicolumn{3}{|l|}{\textbf{Data documentation} (\textsc{dd})}\\ \hline
+        Measure & Value & \multicolumn{2}{|l|}{Measure (Presence Average)} & Value ($\uparrow$) \\ \hline
+        Acc-I-4 ($\downarrow$) & 0,04\cellcolor[HTML]{FEFAF9} & \multicolumn{2}{|l|}{Overall} & 0,54\cellcolor[HTML]{FDCCBD} \\
+        Com-I-1-DevA ($\uparrow$) & 0,99\cellcolor[HTML]{FEFEFD} & \multicolumn{2}{|l|}{1 Motivation} & 1,00\cellcolor[HTML]{FFFFFF} \\
+        Com-I-5 ($\uparrow$) & 1,00\cellcolor[HTML]{FFFFFF} & \multicolumn{2}{|l|}{2 Composition} & 0,79\cellcolor[HTML]{FEE7E0} \\
+        Con-I-2-DevB ($\uparrow$) & 0,98\cellcolor[HTML]{FEFCFB} & \multicolumn{2}{|l|}{3 Collection processes} & 0,57\cellcolor[HTML]{FDD0C2} \\
+        Con-I-3-DevC ($\downarrow$) & 0,05\cellcolor[HTML]{FEF9F8} & \multicolumn{2}{|l|}{4 Data processing procedures} & 0,33\cellcolor[HTML]{FDB6A0} \\
+        Con-I-4-DevD ($\uparrow$) & 1,00\cellcolor[HTML]{FFFFFF} & \multicolumn{2}{|l|}{5 Uses} & 0,20\cellcolor[HTML]{FCA78E} \\ 
+         & & \multicolumn{2}{|l|}{6 Maintenance} & 0,14\cellcolor[HTML]{FCA186} \\ \hline
+        \multicolumn{5}{|l|}{\textbf{Data balance} (\textsc{db})} \\ \hline 
+ 		Sensitive Feature & Gini ($\uparrow$) & Shannon ($\uparrow$) & Simpson ($\uparrow$) & I.I.R. ($\uparrow$) \\ \hline
+        gender & 0,98 & 0,99 & 0,97 & 0,78 \\
+		race1 & 0,37\cellcolor[HTML]{fc8d59} & 0,41\cellcolor[HTML]{fc8d59} & 0,10\cellcolor[HTML]{fc8d59} & 0,02\cellcolor[HTML]{fc8d59} \\
+		lsat & 0,96 & 0,72 & 0,18\cellcolor[HTML]{fc8d59} & 0,00\cellcolor[HTML]{fc8d59} \\
+		ugpa & 0,97 & 0,86 & 0,55 & 0,00\cellcolor[HTML]{fc8d59} \\
+		pass bar & 0,20\cellcolor[HTML]{fc8d59} & 0,30\cellcolor[HTML]{fc8d59} & 0,11\cellcolor[HTML]{fc8d59} & 0,06\cellcolor[HTML]{fc8d59} \\
+		 \hline
+    \end{tabular}
+\end{table}

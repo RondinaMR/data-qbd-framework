@@ -1,0 +1,31 @@
+\begin{table}[h]
+    \caption{Application of the framework measures to the South German Credit dataset. The arrows indicate the best value for each QM (0: $\downarrow$, 1: $\uparrow$). *: Fields inherited from the Data Brief \cite{fabrisAlgorithmicFairnessDatasets2022}.}
+    \label{tab:SouthGermanCredit}
+    \begin{tabular}{|p{3cm}|p{1.9cm}p{3cm}p{2.6cm}p{1.6cm}|}
+        \hline
+        \textbf{Dataset name} & \multicolumn{2}{l|}{South German Credit} & \multicolumn{1}{l|}{\textbf{Date of analysis}} & 01/23/2023 \\ \hline
+        \textbf{Description*} & \multicolumn{4}{p{10cm}|}{The German Credit dataset was created to study the problem of automated credit decisions at a regional Bank in southern Germany. Instances represent loan applicants from 1973 to 1975, who were deemed creditworthy and were granted a loan, bringing about a natural selection bias. The data summarizes their financial situation, credit history and personal situation, including housing and number of liable people. A binary variable encoding whether each loan recipient punctually paid every installment is the target of a classification task. Among covariates, marital status and sex are jointly encoded in a single variable. Many documentation mistakes are present in the UCI entry associated with this resource (UCI Machine Learning Repository, 1994). Due to one of these mistakes, users of this dataset are led to believe that the variable sex can be retrieved from the joint marital status-sex variable, however this is false. A revised version with correct variable encodings, called South German Credit, was donated to UCI Machine Learning Repository (2019) with an accompanying report (Gromping, 2019).} \\ \hline
+        \textbf{Landing page*} & \multicolumn{4}{l|}{\href{https://archive.ics.uci.edu/dataset/573/south+german+credit+update}{https://archive.ics.uci.edu/dataset/573/south+german[...]}} \\ \hline
+        \textbf{Sample size*} & $\sim$1K & \multicolumn{1}{|l}{\textbf{Domain*}} & \multicolumn{2}{|l|}{finance}  \\ \hline
+        \textbf{Last update*} & 2019 & \multicolumn{1}{|p{3cm}}{\textbf{Data specification*}} & \multicolumn{2}{|l|}{tabular data} \\ \hline
+        \textbf{Creator affiliation*} & \multicolumn{4}{l|}{Beuth University of Applied Sciences Berlin} \\ \hline\hline
+        \multicolumn{2}{|l|}{\textbf{Standard data quality} (\textsc{dq})} & \multicolumn{3}{|l|}{\textbf{Data documentation} (\textsc{dd})}\\ \hline
+        Measure & Value & \multicolumn{2}{|l|}{Measure (Presence Average)} & Value ($\uparrow$) \\ \hline
+        Acc-I-4 ($\downarrow$) & 0,07\cellcolor[HTML]{FEF7F5} & \multicolumn{2}{|l|}{Overall} & 0,26\cellcolor[HTML]{FCAD96} \\
+        Com-I-1-DevA ($\uparrow$) & 1,00\cellcolor[HTML]{FFFFFF} & \multicolumn{2}{|l|}{1 Motivation} & 1,00\cellcolor[HTML]{FFFFFF} \\
+        Com-I-5 ($\uparrow$) & 1,00\cellcolor[HTML]{FFFFFF} & \multicolumn{2}{|l|}{2 Composition} & 0,14\cellcolor[HTML]{FCA186} \\
+        Con-I-2-DevB ($\uparrow$) & 1,00\cellcolor[HTML]{FFFFFF} & \multicolumn{2}{|l|}{3 Collection processes} & 0,14\cellcolor[HTML]{FCA186} \\
+        Con-I-3-DevC ($\downarrow$) & 0,10\cellcolor[HTML]{FEF3F0} & \multicolumn{2}{|l|}{4 Data processing procedures} & 0,33\cellcolor[HTML]{FDB6A0} \\
+        Con-I-4-DevD ($\uparrow$) & 1,00\cellcolor[HTML]{FFFFFF} & \multicolumn{2}{|l|}{5 Uses} & 0,20\cellcolor[HTML]{FCA78E} \\ 
+         & & \multicolumn{2}{|l|}{6 Maintenance} & 0,29\cellcolor[HTML]{FCB19A} \\ \hline
+        \multicolumn{5}{|l|}{\textbf{Data balance} (\textsc{db})} \\ \hline 
+ 		Sensitive Feature & Gini ($\uparrow$) & Shannon ($\uparrow$) & Simpson ($\uparrow$) & I.I.R. ($\uparrow$) \\ \hline
+        gastarb & 0,14\cellcolor[HTML]{fc8d59} & 0,23\cellcolor[HTML]{fc8d59} & 0,08\cellcolor[HTML]{fc8d59} & 0,04\cellcolor[HTML]{fc8d59} \\
+		laufkont & 0,92 & 0,90 & 0,75 & 0,16 \\
+		famges & 0,79 & 0,77 & 0,48 & 0,09\cellcolor[HTML]{fc8d59} \\
+		beruf & 0,72 & 0,71 & 0,39 & 0,03\cellcolor[HTML]{fc8d59} \\
+		verm & 0,98 & 0,97 & 0,91 & 0,46 \\
+		kredit & 0,84 & 0,88 & 0,72 & 0,43 \\
+		 \hline
+    \end{tabular}
+\end{table}

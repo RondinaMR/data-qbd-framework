@@ -1,2 +1,2 @@
-Dataset-Name,Can-Open,Com-I-1-DevA,Com-I-5,Acc-I-4,Con-I-3,Con-I-2-DevB,Con-I-4-DevC,Error
-COMPAS,1,0.973,1.0,0.026,0.069,0.985,1.0,No error
+Dataset-Name,Can-Open,Com-I-1-DevA,Com-I-5,Acc-I-4,Con-I-3-DevC,Con-I-2-DevB,Con-I-4-DevD,Error
+COMPAS,1,0.814,1.0,0.06,0.034,0.994,1.0,No error

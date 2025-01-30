@@ -1,0 +1,29 @@
+\begin{table}[h]
+    \caption{Application of the framework measures to the Bank Marketing dataset. The arrows indicate the best value for each QM (0: $\downarrow$, 1: $\uparrow$). *: Fields inherited from the Data Brief \cite{fabrisAlgorithmicFairnessDatasets2022}.}
+    \label{tab:BankMarketing}
+    \begin{tabular}{|p{3cm}|p{1.9cm}p{3cm}p{2.6cm}p{1.6cm}|}
+        \hline
+        \textbf{Dataset name} & \multicolumn{2}{l|}{Bank Marketing} & \multicolumn{1}{l|}{\textbf{Date of analysis}} & 01/18/2023 \\ \hline
+        \textbf{Description*} & \multicolumn{4}{p{10cm}|}{Often simply called Bank dataset in the fairness literature, this resource was produced to support a study of success factors in telemarketing of long-term deposits within a Portuguese bank, with data collected over the period 2008–2010. Each data point represents a telemarketing phone call and includes client-specific features (e.g. job, education), features about the marketing phone call (e.g. day of the week and duration) and meaningful environmental features (e.g. euribor). The classification target is a binary variable indicating client subscription to a term deposit.} \\ \hline
+        \textbf{Landing page*} & \multicolumn{4}{l|}{\href{https://archive.ics.uci.edu/ml/datasets/Bank+Marketing}{https://archive.ics.uci.edu/ml/datasets/Bank+Marketing}} \\ \hline
+        \textbf{Sample size*} & $\sim$40K & \multicolumn{1}{|l}{\textbf{Domain*}} & \multicolumn{2}{|l|}{marketing}  \\ \hline
+        \textbf{Last update*} & 2012 & \multicolumn{1}{|p{3cm}}{\textbf{Data specification*}} & \multicolumn{2}{|l|}{tabular data} \\ \hline
+        \textbf{Creator affiliation*} & \multicolumn{4}{l|}{ISTAR-ISCTE-IUL; University of Minho.} \\ \hline\hline
+        \multicolumn{2}{|l|}{\textbf{Standard data quality} (\textsc{dq})} & \multicolumn{3}{|l|}{\textbf{Data documentation} (\textsc{dd})}\\ \hline
+        Measure & Value & \multicolumn{2}{|l|}{Measure (Presence Average)} & Value ($\uparrow$) \\ \hline
+        Acc-I-4 ($\downarrow$) & 0,03\cellcolor[HTML]{FEFBFA} & \multicolumn{2}{|l|}{Overall} & 0,26\cellcolor[HTML]{FCAD96} \\
+        Com-I-1-DevA ($\uparrow$) & 1,00\cellcolor[HTML]{FFFFFF} & \multicolumn{2}{|l|}{1 Motivation} & 0,67\cellcolor[HTML]{FEDAD0} \\
+        Com-I-5 ($\uparrow$) & 1,00\cellcolor[HTML]{FFFFFF} & \multicolumn{2}{|l|}{2 Composition} & 0,21\cellcolor[HTML]{FCA990} \\
+        Con-I-2-DevB ($\uparrow$) & 0,98\cellcolor[HTML]{FEFCFC} & \multicolumn{2}{|l|}{3 Collection processes} & 0,29\cellcolor[HTML]{FCB19A} \\
+        Con-I-3-DevC ($\downarrow$) & 0,09\cellcolor[HTML]{FEF5F2} & \multicolumn{2}{|l|}{4 Data processing procedures} & 0,33\cellcolor[HTML]{FDB6A0} \\
+        Con-I-4-DevD ($\uparrow$) & 1,00\cellcolor[HTML]{FFFFFF} & \multicolumn{2}{|l|}{5 Uses} & 0,20\cellcolor[HTML]{FCA78E} \\ 
+         & & \multicolumn{2}{|l|}{6 Maintenance} & 0,14\cellcolor[HTML]{FCA186} \\ \hline
+        \multicolumn{5}{|l|}{\textbf{Data balance} (\textsc{db})} \\ \hline 
+ 		Sensitive Feature & Gini ($\uparrow$) & Shannon ($\uparrow$) & Simpson ($\uparrow$) & I.I.R. ($\uparrow$) \\ \hline
+        job & 0,92 & 0,85 & 0,51 & 0,08\cellcolor[HTML]{fc8d59} \\
+		education & 0,92 & 0,86 & 0,63 & 0,00\cellcolor[HTML]{fc8d59} \\
+		marital & 0,81 & 0,82 & 0,59 & 0,19 \\
+		y & 0,40 & 0,51 & 0,25\cellcolor[HTML]{fc8d59} & 0,13\cellcolor[HTML]{fc8d59} \\
+		 \hline
+    \end{tabular}
+\end{table}

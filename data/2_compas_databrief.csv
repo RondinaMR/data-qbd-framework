@@ -1,0 +1,10 @@
+key,value
+name,COMPAS
+description,"this dataset was created for an external audit of racial biases in the Correctional Offender Management Profiling for Alternative Sanctions (COMPAS) risk assessment tool developed by Northpointe (now Equivant), which estimates the likelihood of a defendant becoming a recidivist. Instances represent defendants scored by COMPAS in Broward County, Florida, between 2013–2014, reporting their demographics, criminal record, custody and COMPAS scores. Defendants’ public criminal records were obtained from the Broward County Clerk’s Office website matching them based on date of birth, first and last names. The dataset was augmented with jail records and COMPAS scores provided by the Broward County Sheriff’s Office. Finally, public incarceration records were downloaded from the Florida Department of Corrections website. Instances are associated with two target variables (is recid and is violent recid), indicating whether defendants were booked in jail for a criminal offense (potentially violent) that occurred after their COMPAS screening but within two years."
+affiliation_of_creators,ProPublica
+domain,law
+data_specification,tabular data
+sample_size,~12K
+year,2016
+link_url,https://github.com/propublica/compas-analysis
+link_show,https://github.com/propublica/compas-analysis

@@ -1,0 +1,10 @@
+key,value
+name,South German Credit
+description,"The German Credit dataset was created to study the problem of automated credit decisions at a regional Bank in southern Germany. Instances represent loan applicants from 1973 to 1975, who were deemed creditworthy and were granted a loan, bringing about a natural selection bias. The data summarizes their financial situation, credit history and personal situation, including housing and number of liable people. A binary variable encoding whether each loan recipient punctually paid every installment is the target of a classification task. Among covariates, marital status and sex are jointly encoded in a single variable. Many documentation mistakes are present in the UCI entry associated with this resource (UCI Machine Learning Repository, 1994). Due to one of these mistakes, users of this dataset are led to believe that the variable sex can be retrieved from the joint marital status-sex variable, however this is false. A revised version with correct variable encodings, called South German Credit, was donated to UCI Machine Learning Repository (2019) with an accompanying report (Gromping, 2019)."
+affiliation_of_creators,"Beuth University of Applied Sciences Berlin"
+domain,finance
+data_specification,tabular data
+sample_size,~1K
+year,2020
+link_url,https://archive.ics.uci.edu/dataset/573/south+german+credit+update
+link_show,https://archive.ics.uci.edu/dataset/573/south+german[...]

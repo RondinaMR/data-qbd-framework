@@ -1,0 +1,29 @@
+\begin{table}[h]
+    \caption{Application of the framework measures to the Credit Card Default dataset. The arrows indicate the best value for each QM (0: $\downarrow$, 1: $\uparrow$). *: Fields inherited from the Data Brief \cite{fabrisAlgorithmicFairnessDatasets2022}.}
+    \label{tab:CreditCardDefault}
+    \begin{tabular}{|p{3cm}|p{1.9cm}p{3cm}p{2.6cm}p{1.6cm}|}
+        \hline
+        \textbf{Dataset name} & \multicolumn{2}{l|}{Credit Card Default} & \multicolumn{1}{l|}{\textbf{Date of analysis}} & 01/18/2023 \\ \hline
+        \textbf{Description*} & \multicolumn{4}{p{10cm}|}{This dataset was built to investigate automated mechanisms for credit card default prediction following a wave of defaults in Taiwan connected to patters of card over-issuing and over-usage. The dataset contains payment history of customers of an important Taiwanese bank, from April to October 2005. Demographics, marital status, and education of customers are also provided, along with the amount of credit and a binary variable encoding default on payment, which is the target variable of the associated task.} \\ \hline
+        \textbf{Landing page*} & \multicolumn{4}{l|}{\href{https://archive.ics.uci.edu/ml/datasets/default+of+credit+card+clients}{https://archive.ics.uci.edu/ml/datasets/default[...]}} \\ \hline
+        \textbf{Sample size*} & $\sim$30K credit card holders & \multicolumn{1}{|l}{\textbf{Domain*}} & \multicolumn{2}{|l|}{finance}  \\ \hline
+        \textbf{Last update*} & 2016 & \multicolumn{1}{|p{3cm}}{\textbf{Data specification*}} & \multicolumn{2}{|l|}{tabular data} \\ \hline
+        \textbf{Creator affiliation*} & \multicolumn{4}{l|}{Chung-Hua University;Thompson Rivers University} \\ \hline\hline
+        \multicolumn{2}{|l|}{\textbf{Standard data quality} (\textsc{dq})} & \multicolumn{3}{|l|}{\textbf{Data documentation} (\textsc{dd})}\\ \hline
+        Measure & Value & \multicolumn{2}{|l|}{Measure (Presence Average)} & Value ($\uparrow$) \\ \hline
+        Acc-I-4 ($\downarrow$) & 0,08\cellcolor[HTML]{FEF6F3} & \multicolumn{2}{|l|}{Overall} & 0,28\cellcolor[HTML]{FCB099} \\
+        Com-I-1-DevA ($\uparrow$) & 1,00\cellcolor[HTML]{FFFFFF} & \multicolumn{2}{|l|}{1 Motivation} & 1,00\cellcolor[HTML]{FFFFFF} \\
+        Com-I-5 ($\uparrow$) & 1,00\cellcolor[HTML]{FFFFFF} & \multicolumn{2}{|l|}{2 Composition} & 0,14\cellcolor[HTML]{FCA186} \\
+        Con-I-2-DevB ($\uparrow$) & 0,92\cellcolor[HTML]{FEF5F3} & \multicolumn{2}{|l|}{3 Collection processes} & 0,14\cellcolor[HTML]{FCA186} \\
+        Con-I-3-DevC ($\downarrow$) & 0,06\cellcolor[HTML]{FEF8F6} & \multicolumn{2}{|l|}{4 Data processing procedures} & 0,33\cellcolor[HTML]{FDB6A0} \\
+        Con-I-4-DevD ($\uparrow$) & 1,00\cellcolor[HTML]{FFFFFF} & \multicolumn{2}{|l|}{5 Uses} & 0,40\cellcolor[HTML]{FDBDAA} \\ 
+         & & \multicolumn{2}{|l|}{6 Maintenance} & 0,29\cellcolor[HTML]{FCB19A} \\ \hline
+        \multicolumn{5}{|l|}{\textbf{Data balance} (\textsc{db})} \\ \hline 
+ 		Sensitive Feature & Gini ($\uparrow$) & Shannon ($\uparrow$) & Simpson ($\uparrow$) & I.I.R. ($\uparrow$) \\ \hline
+        SEX & 0,96 & 0,97 & 0,92 & 0,66 \\
+		EDUCATION & 0,73 & 0,57 & 0,28\cellcolor[HTML]{fc8d59} & 0,00\cellcolor[HTML]{fc8d59} \\
+		MARRIAGE & 0,68 & 0,54 & 0,35 & 0,00\cellcolor[HTML]{fc8d59} \\
+		default payment next month & 0,69 & 0,76 & 0,53 & 0,28 \\
+		 \hline
+    \end{tabular}
+\end{table}

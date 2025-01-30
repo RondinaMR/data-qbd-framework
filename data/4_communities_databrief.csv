@@ -1,0 +1,10 @@
+key,value
+name,Communities and Crime
+description,"This dataset was curated to develop a software tool supporting the work of US police departments. It was especially aimed at identifying similar precincts to exchange best practices and share experiences among departments. The creators were supported by the police departments of Camden (NJ) and Philadelphia (PA). The factors included in the dataset were the ones deemed most important to define similarity of communities from the perspective of law enforcement; they were chosen with the help of law enforcement officials from partner institutions and academics of criminal justice, geography and public policy. The dataset includes socio-economic factors (aggregate data on age, income, immigration, and racial composition) obtained from the 1990 US census, along with information about policing (e.g. number of police cars available) based on the 1990 Law Enforcement Management and Administrative Statistics survey, and crime data derived from the 1995 FBI Uniform Crime Reports. In its released version on UCI, the task associated with the dataset is predicting the total number of violent crimes per 100K population in each community. The most referenced version of this dataset was preprocessed with a normalization step; after receiving multiple requests, the creators also published an unnormalized version."
+affiliation_of_creators,"La Salle University; Rutgers University"
+domain,law
+data_specification,tabular data
+sample_size,~2K
+year,2009
+link_url,https://archive.ics.uci.edu/ml/datasets/communities+and+crime
+link_show,https://archive.ics.uci.edu/ml/datasets/communities[...]

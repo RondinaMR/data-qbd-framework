@@ -1,0 +1,11 @@
+key,value
+name,Adult
+description,"This dataset was created as a resource to benchmark the performance of machine learning algorithms on socially relevant data. Each instance is a person who responded to the March 1994 US Current Population Survey, represented along demographic and socio-economic dimensions, with features describing their profession, education, age, sex, race, personal and financial condition. The dataset was extracted from the census database, preprocessed, and donated to UCI Machine Learning Repository in 1996 by Ronny Kohavi and Barry Becker. A binary variable encoding whether respondents’ income is above $50,000 was chosen as the target of the prediction task associated with this resource."
+affiliation_of_creators,Silicon Graphics Inc.
+domain,economics
+data_specification,tabular data
+sample_size,~50K
+year,1996
+link_url,https://archive.ics.uci.edu/ml/datasets/adult
+link_show,https://archive.ics.uci.edu/ml/datasets/adult
+

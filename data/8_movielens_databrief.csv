@@ -1,0 +1,10 @@
+key,value
+name,MovieLens
+description,"First released in 1998, MovieLens datasets represent user ratings from the movie recommender platform run by the GroupLens research group from the University of Minnesota. While different datasets have been released by GroupLens, in this section we concentrate on MovieLens 1M, the one predominantly used in fairness research. User-system interactions take the form of a quadruple (UserID, MovieID, Rating, Timestamp), with ratings expressed on a 1-5 star scale. The dataset also reports user demographics such as age and gender, which is voluntarily provided by the users."
+affiliation_of_creators,University of Minnesota
+domain,"information systems,movies"
+data_specification,tabular data
+sample_size,"~1M reviews, ~6K users, ~4K movies"
+year,2003
+link_url,https://grouplens.org/datasets/movielens/1m/
+link_show,https://grouplens.org/datasets/movielens/1m/

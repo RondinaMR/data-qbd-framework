@@ -1,0 +1,10 @@
+key,value
+name,Credit Card Default
+description,"This dataset was built to investigate automated mechanisms for credit card default prediction following a wave of defaults in Taiwan connected to patters of card over-issuing and over-usage. The dataset contains payment history of customers of an important Taiwanese bank, from April to October 2005. Demographics, marital status, and education of customers are also provided, along with the amount of credit and a binary variable encoding default on payment, which is the target variable of the associated task."
+affiliation_of_creators,"Chung-Hua University;Thompson Rivers University"
+domain,finance
+data_specification,tabular data
+sample_size,~30K credit card holders
+year,2016
+link_url,https://archive.ics.uci.edu/ml/datasets/default+of+credit+card+clients
+link_show,https://archive.ics.uci.edu/ml/datasets/default[...]

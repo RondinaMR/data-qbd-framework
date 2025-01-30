@@ -1,0 +1,10 @@
+key,value
+name,Law School
+description,"This dataset was collected to study performance in law school and bar examination of minority examinees in connection with affirmative action programs established after 1967 and subsequent anecdotal reports suggesting low bar passage rates for black examinees. Students, law schools, and state boards of bar examiners contributed to this dataset. The study tracks students who entered law school in fall 1991 through three or more years of law school and up to five administrations of the bar examination. Variables include demographics of candidates (e.g. age, race, sex), their academic performance (undergraduate GPA, law school admission test, and GPA), personal condition (e.g. financial responsibility for others during law school) along with information about law schools and bar exams (e.g. geographical area where it was taken). The associated task in machine learning is prediction of passage of the bar exam."
+affiliation_of_creators,Law School Admission Council (LSAC)
+domain,education
+data_specification,tabular data
+sample_size,~20K
+year,1998
+link_url,https://storage.googleapis.com/lawschool_dataset/bar_pass_prediction.csv
+link_show,https://storage.googleapis.com/lawschool[...]

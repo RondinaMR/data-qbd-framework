@@ -1,0 +1,31 @@
+\begin{table}[h]
+    \caption{Application of the framework measures to the Adult dataset. The arrows indicate the best value for each QM (0: $\downarrow$, 1: $\uparrow$). *: Fields inherited from the Data Brief \cite{fabrisAlgorithmicFairnessDatasets2022}.}
+    \label{tab:Adult}
+    \begin{tabular}{|p{3cm}|p{1.9cm}p{3cm}p{2.6cm}p{1.6cm}|}
+        \hline
+        \textbf{Dataset name} & \multicolumn{2}{l|}{Adult} & \multicolumn{1}{l|}{\textbf{Date of analysis}} & 07/28/2023 \\ \hline
+        \textbf{Description*} & \multicolumn{4}{p{10cm}|}{This dataset was created as a resource to benchmark the performance of machine learning algorithms on socially relevant data. Each instance is a person who responded to the March 1994 US Current Population Survey, represented along demographic and socio-economic dimensions, with features describing their profession, education, age, sex, race, personal and financial condition. The dataset was extracted from the census database, preprocessed, and donated to UCI Machine Learning Repository in 1996 by Ronny Kohavi and Barry Becker. A binary variable encoding whether respondents’ income is above \$50,000 was chosen as the target of the prediction task associated with this resource.} \\ \hline
+        \textbf{Landing page*} & \multicolumn{4}{l|}{\href{https://archive.ics.uci.edu/ml/datasets/adult}{https://archive.ics.uci.edu/ml/datasets/adult}} \\ \hline
+        \textbf{Sample size*} & $\sim$50K & \multicolumn{1}{|l}{\textbf{Domain*}} & \multicolumn{2}{|l|}{economics}  \\ \hline
+        \textbf{Last update*} & 1996 & \multicolumn{1}{|p{3cm}}{\textbf{Data specification*}} & \multicolumn{2}{|l|}{tabular data} \\ \hline
+        \textbf{Creator affiliation*} & \multicolumn{4}{l|}{Silicon Graphics Inc.} \\ \hline\hline
+        \multicolumn{2}{|l|}{\textbf{Standard data quality} (\textsc{dq})} & \multicolumn{3}{|l|}{\textbf{Data documentation} (\textsc{dd})}\\ \hline
+        Measure & Value & \multicolumn{2}{|l|}{Measure (Presence Average)} & Value ($\uparrow$) \\ \hline
+        Acc-I-4 ($\downarrow$) & 0,08\cellcolor[HTML]{FEF6F3} & \multicolumn{2}{|l|}{Overall} & 0,38\cellcolor[HTML]{FDBBA8} \\
+        Com-I-1-DevA ($\uparrow$) & 1,00\cellcolor[HTML]{FFFFFF} & \multicolumn{2}{|l|}{1 Motivation} & 0,67\cellcolor[HTML]{FEDAD0} \\
+        Com-I-5 ($\uparrow$) & 1,00\cellcolor[HTML]{FFFFFF} & \multicolumn{2}{|l|}{2 Composition} & 0,21\cellcolor[HTML]{FCA990} \\
+        Con-I-2-DevB ($\uparrow$) & 1,00\cellcolor[HTML]{FFFFFF} & \multicolumn{2}{|l|}{3 Collection processes} & 0,14\cellcolor[HTML]{FCA186} \\
+        Con-I-3-DevC ($\downarrow$) & 0,12\cellcolor[HTML]{FEF1ED} & \multicolumn{2}{|l|}{4 Data processing procedures} & 0,67\cellcolor[HTML]{FEDAD0} \\
+        Con-I-4-DevD ($\uparrow$) & 1,00\cellcolor[HTML]{FFFFFF} & \multicolumn{2}{|l|}{5 Uses} & 0,80\cellcolor[HTML]{FEE9E2} \\ 
+         & & \multicolumn{2}{|l|}{6 Maintenance} & 0,43\cellcolor[HTML]{FDC0AE} \\ \hline
+        \multicolumn{5}{|l|}{\textbf{Data balance} (\textsc{db})} \\ \hline 
+ 		Sensitive Feature & Gini ($\uparrow$) & Shannon ($\uparrow$) & Simpson ($\uparrow$) & I.I.R. ($\uparrow$) \\ \hline
+        sex & 0,89 & 0,92 & 0,79 & 0,49 \\
+		race & 0,32\cellcolor[HTML]{fc8d59} & 0,34\cellcolor[HTML]{fc8d59} & 0,09\cellcolor[HTML]{fc8d59} & 0,01\cellcolor[HTML]{fc8d59} \\
+		education & 0,86 & 0,73 & 0,28\cellcolor[HTML]{fc8d59} & 0,00\cellcolor[HTML]{fc8d59} \\
+		marital-status & 0,77 & 0,65 & 0,32 & 0,00\cellcolor[HTML]{fc8d59} \\
+		native-country & 0,20\cellcolor[HTML]{fc8d59} & 0,18\cellcolor[HTML]{fc8d59} & 0,01\cellcolor[HTML]{fc8d59} & 0,00\cellcolor[HTML]{fc8d59} \\
+		income & 0,73 & 0,80 & 0,58 & 0,32 \\
+		 \hline
+    \end{tabular}
+\end{table}
