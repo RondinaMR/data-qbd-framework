@@ -1,0 +1,21 @@
+name: data-qbd-fw
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - imbalanced-learn
+  - jupyter
+  - liac-arff
+  - matplotlib
+  - odfpy
+  - pandas
+  - plotly
+  - prettytable
+  - python-kaleido
+  - python=3.10
+  - reportlab
+  - scikit-learn
+  - seaborn
+  - tqdm
+  - xlrd
+  - conda-forge::numpy
