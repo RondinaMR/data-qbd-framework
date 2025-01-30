@@ -5,44 +5,85 @@ from matplotlib import colors
 from utilities import hex_to_rgb, rgb_to_hex, interpolate_color
 
 def create_labels(dataset_name, dq_risk, db_risk, dd_risk, min_color, max_color):
-    ethical_challenges = {
-        "1_inconclusive_evidence": {
-            "risk": dq_risk,
-            "dim": 1,
-            "line1": "Inconclusive",
-            "line2": "evidence"
-        },
-        "2_inscrutable_evidence": {
-            "risk": dq_risk + dd_risk,
-            "dim": 2,
-            "line1": "Inscrutable",
-            "line2": "evidence"
-        },
-        "3_misguided_evidence": {
-            "risk": dd_risk,
-            "dim": 1,
-            "line1": "Misguided",
-            "line2": "evidence"
-        },
-        "4_unfair_outcomes": {
-            "risk": dq_risk + db_risk,
-            "dim": 2,
-            "line1": "Unfair",
-            "line2": "outcomes"
-        },
-        "5_transformative_effects": {
-            "risk": db_risk,
-            "dim": 1,
-            "line1": "Transformative",
-            "line2": "effects"
-        },
-        "6_traceability": {
-            "risk": dq_risk + db_risk + dd_risk,
-            "dim": 3,
-            "line1": "Traceability",
-            "line2": ""
-        },
-    }
+    if db_risk is None:
+        ethical_challenges = {
+            "1_inconclusive_evidence": {
+                "risk": dq_risk,
+                "dim": 1,
+                "line1": "Inconclusive",
+                "line2": "evidence"
+            },
+            "2_inscrutable_evidence": {
+                "risk": dq_risk + dd_risk,
+                "dim": 2,
+                "line1": "Inscrutable",
+                "line2": "evidence"
+            },
+            "3_misguided_evidence": {
+                "risk": dd_risk,
+                "dim": 1,
+                "line1": "Misguided",
+                "line2": "evidence"
+            },
+            "4_unfair_outcomes": {
+                "risk": dq_risk,
+                "dim": 1,
+                "line1": "Unfair",
+                "line2": "outcomes"
+            },
+            "5_transformative_effects": {
+                "risk": 0,
+                "dim": 1,
+                "line1": "Transformative",
+                "line2": "effects (N/A)"
+            },
+            "6_traceability": {
+                "risk": dq_risk + dd_risk,
+                "dim": 2,
+                "line1": "Traceability",
+                "line2": ""
+            },
+        }
+    else:
+        ethical_challenges = {
+            "1_inconclusive_evidence": {
+                "risk": dq_risk,
+                "dim": 1,
+                "line1": "Inconclusive",
+                "line2": "evidence"
+            },
+            "2_inscrutable_evidence": {
+                "risk": dq_risk + dd_risk,
+                "dim": 2,
+                "line1": "Inscrutable",
+                "line2": "evidence"
+            },
+            "3_misguided_evidence": {
+                "risk": dd_risk,
+                "dim": 1,
+                "line1": "Misguided",
+                "line2": "evidence"
+            },
+            "4_unfair_outcomes": {
+                "risk": dq_risk + db_risk,
+                "dim": 2,
+                "line1": "Unfair",
+                "line2": "outcomes"
+            },
+            "5_transformative_effects": {
+                "risk": db_risk,
+                "dim": 1,
+                "line1": "Transformative",
+                "line2": "effects"
+            },
+            "6_traceability": {
+                "risk": dq_risk + db_risk + dd_risk,
+                "dim": 3,
+                "line1": "Traceability",
+                "line2": ""
+            },
+        }
+    
     font_properties = {
         "fontSize": 40,
         "fontName": "Courier",
@@ -99,7 +140,10 @@ def compute_ethical_challenge_risks_labels(dq_df, db_df, dd_df, dataset_names, d
         if dataset in ["MovieLensMovies", "MovieLensRatings"]:
             continue
         dq_risk = dq_df.at[dataset, 'risk_ratio']
-        db_risk = db_aggregate_df.at[dataset, 'simpson_risk_ratio']
+        try:
+            db_risk = db_aggregate_df.at[dataset, 'simpson_risk_ratio']
+        except KeyError:
+            db_risk = None
         dd_risk = dd_aggregate_df.at[dataset, 'risk_ratio']
         create_labels(dataset_dict[dataset], dq_risk, db_risk, dd_risk, max_color, min_color)
     return

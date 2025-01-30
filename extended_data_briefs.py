@@ -143,7 +143,7 @@ def create_extended_data_briefs():
     
     tex_extended_data_brief(tex_template=tex_template, input_dq='analysis/3_SouthGermanCredit_DQ.csv', input_dd='analysis/3_SouthGermanCredit_DTS.ods', input_db='analysis/3_SouthGermanCredit_DB.csv', input_dbf='data/3_southgermancredit_databrief.csv', output_tex='analysis/latex/extended_data_briefs/3_SouthGermanCredit_EDB.tex')
 
-    tex_extended_data_brief(tex_template=tex_template, input_dq='analysis/4_CommunitiesAndCrime_DQ.csv', input_dd='analysis/4_CommunitiesAndCrime_DTS.ods', input_db='analysis/4_CommunitiesAndCrime_DB.csv', input_dbf='data/4_communities_databrief.csv', output_tex='analysis/latex/extended_data_briefs/4_CommunitiesAndCrime_EDB.tex')
+    tex_extended_data_brief(tex_template=tex_template, input_dq='analysis/4_CommunitiesAndCrime_DQ.csv', input_dd='analysis/4_CommunitiesAndCrime_DTS.ods', input_db=None, input_dbf='data/4_communities_databrief.csv', output_tex='analysis/latex/extended_data_briefs/4_CommunitiesAndCrime_EDB.tex')
     
     tex_extended_data_brief(tex_template=tex_template, input_dq='analysis/5_BankMarketing_DQ.csv', input_dd='analysis/5_BankMarketing_DTS.ods', input_db='analysis/5_BankMarketing_DB.csv', input_dbf='data/5_bank_databrief.csv', output_tex='analysis/latex/extended_data_briefs/5_BankMarketing_EDB.tex')
     
