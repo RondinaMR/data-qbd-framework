@@ -28,3 +28,6 @@ import pandas as pd
 dataframe = pd.read_csv(bank-additional-full.csv,sep=";", na_values=['unknown'])
 Quality(dataset_name=f'BankMarketing_DQ', df=dataframe, "analysis/", isurl=False, pretty_name='Bank Marketing')
 ```
+
+## Acknowledgements
+Thanks to Vitaletti D. for his [Master Thesis](https://webthesis.biblio.polito.it/21223/): his implementation work was the starting point for the calculation of the data quality measures.
